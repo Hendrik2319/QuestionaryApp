@@ -1,0 +1,128 @@
+{
+    "title": "Kinder in Berlin",
+    "questions": [
+        {
+            "id": "have children",
+            "text": "Haben Sie Kinder?",
+            "type": "BOOL"
+        },
+        {
+            "id": "how much children",
+            "text": "Wie viele Kinder haben Sie?",
+            "type": "SINGLE",
+            "options": [
+                { "value": "1" },
+                { "value": "2" },
+                { "value": "3" },
+                { "value": "4" },
+                { "value": "5" },
+                { "value": "more", "label": "mehr" }
+            ],
+            "conditions": {
+                "type": "ALL",
+                "conditions": [
+                    {
+                        "type": "VALUE",
+                        "question_id": "have children",
+                        "value": {
+                            "type": "BOOL",
+                            "value": true
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": "institution",
+            "text": "Welche Einrichtungen besuchen Ihre Kinder (mehrere Antworten sind hier möglich)?",
+            "type": "MULTIPLE",
+            "options": [
+                { "label": "Kindergarten", "value": "kindergarten" },
+                { "label": "Schule"      , "value": "school"       },
+                { "label": "Sportverein" , "value": "sports club"  }
+            ],
+            "conditions": {
+                "type": "ALL",
+                "conditions": [
+                    {
+                        "type": "VALUE",
+                        "question_id": "have children",
+                        "value": {
+                            "type": "BOOL",
+                            "value": true
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": "school lunch",
+            "text": "Wie zufrieden sind sie mit dem Schulessen in Bezug auf....",
+            "type": "GROUP",
+            "sub_questions": [
+                {
+                    "id": "school lunch - price",
+                    "text": "Preis",
+                    "type": "SINGLE",
+                    "options": [
+                        { "label": "Sehr zufrieden"        , "value": "+2" },
+                        { "label": "Einigermaßen zufrieden", "value": "+1" },
+                        { "label": "Unzufrieden"           , "value": "-1" },
+                        { "label": "Sehr unzufrieden"      , "value": "-2" }
+                    ]
+                },
+                {
+                    "id": "school lunch - quality",
+                    "text": "Qualität",
+                    "type": "SINGLE",
+                    "options": [
+                        { "label": "Sehr zufrieden"        , "value": "+2" },
+                        { "label": "Einigermaßen zufrieden", "value": "+1" },
+                        { "label": "Unzufrieden"           , "value": "-1" },
+                        { "label": "Sehr unzufrieden"      , "value": "-2" }
+                    ]
+                }
+            ],
+            "conditions": {
+                "type": "ALL",
+                "conditions": [
+                    {
+                        "type": "VALUE",
+                        "question_id": "have children",
+                        "value": {
+                            "type": "BOOL",
+                            "value": true
+                        }
+                    },
+                    {
+                        "type": "VALUE",
+                        "question_id": "institution",
+                        "value": {
+                            "type": "STRING",
+                            "value": "school"
+                        }
+                    }
+                ]
+            }
+        }, 
+        {
+            "id": "part of town",
+            "text": "In welchem Stadtteil wohnen Sie?",
+            "type": "SINGLE",
+            "options": [
+                { "value": "Mitte" },
+                { "value": "Friedrichshain-Kreuzberg" },
+                { "value": "Pankow" },
+                { "value": "Charlottenburg-Wilmersdorf" },
+                { "value": "Spandau" },
+                { "value": "Steglitz-Zehlendorf" },
+                { "value": "Tempelhof-Schöneberg" },
+                { "value": "Neukölln" },
+                { "value": "Treptow-Köpenick" },
+                { "value": "Marzahn-Hellersdorf" },
+                { "value": "Lichtenberg" },
+                { "value": "Reinickendorf" }
+            ]
+        }
+    ]
+}
