@@ -1,9 +1,11 @@
 import './App.css'
+import UploadQuestionaryFile from './components/UploadQuestionaryFile'
 
 function App() {
   return (
     <>
-      Nothing
+      <h1>Questionary</h1>
+      <UploadQuestionaryFile/>
     </>
   )
 }
