@@ -1,5 +1,7 @@
 package net.schwarzbaer.spring.questionary.models.questionary;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +15,7 @@ public class Questionary
 {
     private final QuestionaryDef definition;
     private final Map<String,Question<?>> questions;
+    private final List<Question<?>> questionList;
     private final @NonNull String title;
 
     public Questionary(@NonNull QuestionaryDef definition) throws WrongDefinitionStructureException
@@ -20,6 +23,7 @@ public class Questionary
         this.definition = definition;
         title = this.definition.title();
         questions = new HashMap<>();
+        questionList = new ArrayList<>();
 
         List<QuestionDef> questionDefs = this.definition.questions();
         if (questionDefs != null && !questionDefs.isEmpty())
@@ -30,12 +34,13 @@ public class Questionary
                 addToMap(questions, question);
                 
                 if (question instanceof QuestionGroup group)
-                {
                     group.forEachSubQuestion((QuestionGroup.ForEachSubQuestionAction) subQuestion -> addToMap(questions, subQuestion));
-                }
             }
 
-            for (Question<?> question : questions.values())
+            questionList.addAll(questions.values());
+            questionList.sort(Comparator.comparing(q->q.index));
+
+            for (Question<?> question : questionList)
                 question.dereferenceIdsInConditions(questions::get);
         }
     }
@@ -56,7 +61,12 @@ public class Questionary
 
     public void checkDefinitionStructure() throws WrongDefinitionStructureException
     {
-        for (Question<?> question : questions.values())
+        for (Question<?> question : questionList)
             question.checkDefinitionStructure();
+    }
+
+    public Question<?> getQuestion(String questionId)
+    {
+        return questions.get(questionId);
     }
 }

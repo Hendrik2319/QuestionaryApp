@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import lombok.NonNull;
+import net.schwarzbaer.spring.questionary.models.answers.QuestionAnswerValue;
 import net.schwarzbaer.spring.questionary.models.definitions.ChoiceQuestionDef;
 import net.schwarzbaer.spring.questionary.models.definitions.ConditionValueDef;
 import net.schwarzbaer.spring.questionary.models.definitions.OptionDef;
@@ -60,16 +61,42 @@ public class ChoiceQuestion extends Question<ChoiceQuestionDef>
     boolean meetToConditionValue(ConditionValueDef value)
     {
         if (value instanceof ConditionValueDef.StringValueDef stringValueDef)
-        {
-            @NonNull
-            String conditionValue = stringValueDef.value();
-
-            List<OptionDef> optionDefs = definition.getOptions();
-            for (OptionDef optionDef : optionDefs)
-                if (conditionValue.equals(optionDef.value()))
-                    return true;
-        }
+            return isAnOptionValue(stringValueDef.value());
         return false;
+    }
+    
+
+    @Override
+    public boolean meetToAnswerValue(QuestionAnswerValue value)
+    {
+        if (value instanceof QuestionAnswerValue.StringValue stringValue)
+            return isAnOptionValue(stringValue.value());
+        return false;
+    }
+
+    private boolean isAnOptionValue(@NonNull String value)
+    {
+        List<OptionDef> optionDefs = definition.getOptions();
+        for (OptionDef optionDef : optionDefs)
+            if (value.equals(optionDef.value()))
+                return true;
+        return false;
+    }
+
+    @Override
+    public void addAnswerToSet(@NonNull Set<QuestionAnswerValue> answerSet, @NonNull QuestionAnswerValue answerValue)
+    {
+        switch (definition.getSelectionType())
+        {
+        case Multiple:
+            answerSet.add(answerValue);
+            break;
+
+        case Single:
+            answerSet.clear();
+            answerSet.add(answerValue);
+            break;
+        }
     }
 
 }

@@ -2,10 +2,12 @@ package net.schwarzbaer.spring.questionary.models.questionary;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
 import lombok.NonNull;
+import net.schwarzbaer.spring.questionary.models.answers.QuestionAnswerValue;
 import net.schwarzbaer.spring.questionary.models.definitions.ConditionValueDef;
 import net.schwarzbaer.spring.questionary.models.definitions.QuestionDef;
 import net.schwarzbaer.spring.questionary.models.definitions.QuestionGroupDef;
@@ -49,7 +51,7 @@ public class QuestionGroup extends Question<QuestionGroupDef>
     }
 
     @Override
-    void dereferenceIdsInConditions(Function<String, Question<?>> findQuestion)
+    void dereferenceIdsInConditions(@NonNull Function<String, Question<?>> findQuestion)
     {
         super.dereferenceIdsInConditions(findQuestion);
 
@@ -78,5 +80,17 @@ public class QuestionGroup extends Question<QuestionGroupDef>
     boolean meetToConditionValue(ConditionValueDef value)
     {
         throw new IllegalStateException("No condition can't refer directly to a question group.");
+    }
+
+    @Override
+    public boolean meetToAnswerValue(QuestionAnswerValue value)
+    {
+        throw new IllegalStateException("No answer can't target directly to a question group.");
+    }
+
+    @Override
+    public void addAnswerToSet(@NonNull Set<QuestionAnswerValue> answerSet, @NonNull QuestionAnswerValue answerValue)
+    {
+        throw new IllegalStateException("No answer can't target directly to a question group.");
     }
 }

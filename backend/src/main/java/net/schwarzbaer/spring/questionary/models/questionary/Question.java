@@ -1,8 +1,10 @@
 package net.schwarzbaer.spring.questionary.models.questionary;
 
+import java.util.Set;
 import java.util.function.Function;
 
 import lombok.NonNull;
+import net.schwarzbaer.spring.questionary.models.answers.QuestionAnswerValue;
 import net.schwarzbaer.spring.questionary.models.definitions.BoolQuestionDef;
 import net.schwarzbaer.spring.questionary.models.definitions.ChoiceQuestionDef;
 import net.schwarzbaer.spring.questionary.models.definitions.ConditionValueDef;
@@ -46,7 +48,7 @@ public abstract class Question<DefinitionType extends QuestionDef>
         throw new IllegalArgumentException("Unknown sub type of QuestionDef");
     }
 
-    void dereferenceIdsInConditions(Function<String,Question<?>> findQuestion)
+    void dereferenceIdsInConditions(@NonNull Function<String,Question<?>> findQuestion)
     {
         if (conditions!=null)
             conditions.dereferenceIds(findQuestion);
@@ -70,5 +72,7 @@ public abstract class Question<DefinitionType extends QuestionDef>
             conditions.checkDefinitionStructure(this);
     }
 
-    abstract boolean meetToConditionValue(ConditionValueDef value);
+    abstract boolean meetToConditionValue(@NonNull ConditionValueDef value);
+    public abstract boolean meetToAnswerValue(@NonNull QuestionAnswerValue value);
+    public abstract void addAnswerToSet(@NonNull Set<QuestionAnswerValue> answerSet, @NonNull QuestionAnswerValue answerValue);
 }

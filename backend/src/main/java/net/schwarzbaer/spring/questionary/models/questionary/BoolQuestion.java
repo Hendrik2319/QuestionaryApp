@@ -1,6 +1,9 @@
 package net.schwarzbaer.spring.questionary.models.questionary;
 
+import java.util.Set;
+
 import lombok.NonNull;
+import net.schwarzbaer.spring.questionary.models.answers.QuestionAnswerValue;
 import net.schwarzbaer.spring.questionary.models.definitions.BoolQuestionDef;
 import net.schwarzbaer.spring.questionary.models.definitions.ConditionValueDef;
 
@@ -15,5 +18,18 @@ public class BoolQuestion extends Question<BoolQuestionDef>
     boolean meetToConditionValue(ConditionValueDef value)
     {
         return value instanceof ConditionValueDef.BoolValueDef;
+    }
+
+    @Override
+    public boolean meetToAnswerValue(QuestionAnswerValue value)
+    {
+        return value instanceof QuestionAnswerValue.BoolValue;
+    }
+
+    @Override
+    public void addAnswerToSet(@NonNull Set<QuestionAnswerValue> answerSet, @NonNull QuestionAnswerValue answerValue)
+    {
+        answerSet.clear();
+        answerSet.add(answerValue);
     }
 }

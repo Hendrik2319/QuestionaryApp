@@ -1,5 +1,7 @@
 package net.schwarzbaer.spring.questionary.controllers;
 
+import java.util.NoSuchElementException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -31,10 +33,24 @@ public class GlobalExceptionHandler
 
     @ExceptionHandler(WrongDefinitionStructureException.class)
     @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
-    public ErrorMessage handleDefinitionStructureExceptions(Exception ex)
+    public ErrorMessage handleException(WrongDefinitionStructureException ex)
     {
         return createErrorMessageAndDoLog(ex);
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    public ErrorMessage handleException(IllegalArgumentException ex)
+    {
+        return createErrorMessageAndDoLog(ex);
+    }
+
+	@ExceptionHandler(NoSuchElementException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public ErrorMessage handleException(NoSuchElementException ex)
+	{
+		return createErrorMessageAndDoLog(ex);
+	}
 
 	private static ErrorMessage createErrorMessageAndDoLog(Exception ex)
 	{
