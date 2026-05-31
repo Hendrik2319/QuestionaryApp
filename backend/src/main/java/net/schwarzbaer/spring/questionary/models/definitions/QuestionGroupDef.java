@@ -9,5 +9,5 @@ import lombok.ToString;
 @Setter @Getter @ToString(callSuper=true)
 public class QuestionGroupDef extends QuestionDef
 {
-    protected List<QuestionDef> subQuestions;
+    private List<QuestionDef> subQuestions;
 }

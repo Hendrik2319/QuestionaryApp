@@ -1,12 +1,9 @@
 package net.schwarzbaer.spring.questionary.models.definitions;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.NonNull;
 
-@Setter @Getter @ToString
-public class ConditionDef
-{
-    private String questionId;
-    private ConditionValueDef value;
-}
+public record ConditionDef (
+    @NonNull String questionId,
+    @NonNull ConditionValueDef value
+)
+{}

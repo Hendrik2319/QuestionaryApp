@@ -4,8 +4,7 @@
         {
             "id": "have children",
             "text": "Haben Sie Kinder?",
-            "type": "BOOL",
-			"unknown": "???"
+            "type": "BOOL"
         },
         {
             "id": "how much children",

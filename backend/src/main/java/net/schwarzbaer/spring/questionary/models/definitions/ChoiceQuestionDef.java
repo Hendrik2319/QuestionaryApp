@@ -3,6 +3,7 @@ package net.schwarzbaer.spring.questionary.models.definitions;
 import java.util.List;
 
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -14,7 +15,7 @@ public abstract class ChoiceQuestionDef extends QuestionDef
     private List<OptionDef> options;
     private final SelectionType selectionType;
 
-    protected ChoiceQuestionDef(SelectionType selectionType)
+    protected ChoiceQuestionDef(@NonNull SelectionType selectionType)
     {
         this.selectionType = selectionType;
     }
