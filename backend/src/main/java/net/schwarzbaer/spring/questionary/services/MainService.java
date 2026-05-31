@@ -3,9 +3,9 @@ package net.schwarzbaer.spring.questionary.services;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import net.schwarzbaer.spring.questionary.models.Questionary;
 import net.schwarzbaer.spring.questionary.models.definitions.QuestionaryDef;
 import net.schwarzbaer.spring.questionary.models.errors.WrongDefinitionStructureException;
+import net.schwarzbaer.spring.questionary.models.questionary.Questionary;
 import tools.jackson.databind.ObjectMapper;
 
 @Service
