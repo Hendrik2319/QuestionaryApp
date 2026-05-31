@@ -1,6 +1,6 @@
 import axios from "axios";
-import { useState } from "react";
 import type { ChangeEvent } from "react";
+import { useState } from "react";
 
 function UploadQuestionaryFile() {
     const [file, setFile] = useState<File | null>(null);
@@ -23,14 +23,18 @@ function UploadQuestionaryFile() {
                 },
             }
         )
-            .then((response) => {
-                if (response.status !== 200)
-                    throw new Error("Get wrong response status, when setting questionary file: " + response.status);
+            .then((/* response */) => {
                 alert("Upload erfolgreich");
             })
             .catch((error) => {
-                console.error("ERROR[setting questionary file]", error);
-                alert("Upload fehlgeschlagen");
+                const errorData = error?.response?.data;
+                const message   = errorData?.error;
+                const timestamp = errorData?.timestamp;
+                if (message || timestamp)
+                    console.error("ERROR[setting questionary file]", error, "\r\nCause:\r\n"+ message, "\r\n\r\nTimestamp:\r\n"+timestamp);
+                else
+                    console.error("ERROR[setting questionary file]", error);
+                alert("Upload fehlgeschlagen (details in console)");
             });
     };
 
