@@ -9,6 +9,7 @@ import java.util.Set;
 
 import lombok.NonNull;
 import net.schwarzbaer.spring.questionary.models.answers.QuestionAnswerDTO.ChangeType;
+import net.schwarzbaer.spring.questionary.models.definitions.SelectionType;
 import net.schwarzbaer.spring.questionary.models.questionary.Question;
 import net.schwarzbaer.spring.questionary.models.questionary.QuestionGroup;
 import net.schwarzbaer.spring.questionary.models.questionary.Questionary;
@@ -43,8 +44,25 @@ public class QuestionaryAnswers
         Set<QuestionAnswerValue> answerSet = answers.computeIfAbsent(questionId, id->new HashSet<>());
         switch (changeType)
         {
-        case UNSET: answerSet.remove(answerValue); break;
-        case SET  : question.addAnswerToSet(answerSet,answerValue); break;
+        case UNSET:
+            answerSet.remove(answerValue);
+            break;
+
+        case SET:
+            SelectionType selectionType = question.getSelectionType();
+            if (selectionType!=null) // only QuestionGroup is allowed to have a selectionType of NULL
+                switch (selectionType)
+                {
+                case Multiple:
+                    answerSet.add(answerValue);
+                    break;
+
+                case Single:
+                    answerSet.clear();
+                    answerSet.add(answerValue);
+                    break;
+                }
+            break;
         }
     }
 }

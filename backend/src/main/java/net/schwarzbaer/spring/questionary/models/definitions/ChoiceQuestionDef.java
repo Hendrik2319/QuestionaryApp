@@ -10,14 +10,11 @@ import lombok.ToString;
 @Setter @Getter @ToString(callSuper=true)
 public abstract class ChoiceQuestionDef extends QuestionDef
 {
-    public enum SelectionType { Multiple, Single }
-
     private List<OptionDef> options;
-    private final SelectionType selectionType;
 
     protected ChoiceQuestionDef(@NonNull SelectionType selectionType)
     {
-        this.selectionType = selectionType;
+        super(selectionType);
     }
 
     @Setter @Getter @ToString(callSuper=true)

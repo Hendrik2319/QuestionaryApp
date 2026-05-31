@@ -82,21 +82,4 @@ public class ChoiceQuestion extends Question<ChoiceQuestionDef>
                 return true;
         return false;
     }
-
-    @Override
-    public void addAnswerToSet(@NonNull Set<QuestionAnswerValue> answerSet, @NonNull QuestionAnswerValue answerValue)
-    {
-        switch (definition.getSelectionType())
-        {
-        case Multiple:
-            answerSet.add(answerValue);
-            break;
-
-        case Single:
-            answerSet.clear();
-            answerSet.add(answerValue);
-            break;
-        }
-    }
-
 }

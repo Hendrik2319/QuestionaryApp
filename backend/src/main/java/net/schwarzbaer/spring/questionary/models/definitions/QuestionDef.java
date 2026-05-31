@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -24,4 +25,10 @@ public class QuestionDef
     private String id;
     private String text;
     private ConditionsGroupDef conditions;
+    private final SelectionType selectionType;
+
+    protected QuestionDef(@NonNull SelectionType selectionType)
+    {
+        this.selectionType = selectionType;
+    }
 }

@@ -1,7 +1,5 @@
 package net.schwarzbaer.spring.questionary.models.questionary;
 
-import java.util.Set;
-
 import lombok.NonNull;
 import net.schwarzbaer.spring.questionary.models.answers.QuestionAnswerValue;
 import net.schwarzbaer.spring.questionary.models.definitions.BoolQuestionDef;
@@ -24,12 +22,5 @@ public class BoolQuestion extends Question<BoolQuestionDef>
     public boolean meetToAnswerValue(QuestionAnswerValue value)
     {
         return value instanceof QuestionAnswerValue.BoolValue;
-    }
-
-    @Override
-    public void addAnswerToSet(@NonNull Set<QuestionAnswerValue> answerSet, @NonNull QuestionAnswerValue answerValue)
-    {
-        answerSet.clear();
-        answerSet.add(answerValue);
     }
 }

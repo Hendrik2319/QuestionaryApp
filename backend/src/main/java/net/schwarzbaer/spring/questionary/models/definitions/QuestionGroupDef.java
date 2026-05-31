@@ -10,4 +10,9 @@ import lombok.ToString;
 public class QuestionGroupDef extends QuestionDef
 {
     private List<QuestionDef> subQuestions;
+
+    public QuestionGroupDef()
+    {
+        super(null);
+    }
 }

@@ -1,6 +1,5 @@
 package net.schwarzbaer.spring.questionary.models.questionary;
 
-import java.util.Set;
 import java.util.function.Function;
 
 import lombok.NonNull;
@@ -11,6 +10,7 @@ import net.schwarzbaer.spring.questionary.models.definitions.ConditionValueDef;
 import net.schwarzbaer.spring.questionary.models.definitions.ConditionsGroupDef;
 import net.schwarzbaer.spring.questionary.models.definitions.QuestionDef;
 import net.schwarzbaer.spring.questionary.models.definitions.QuestionGroupDef;
+import net.schwarzbaer.spring.questionary.models.definitions.SelectionType;
 import net.schwarzbaer.spring.questionary.models.errors.WrongDefinitionStructureException;
 
 public abstract class Question<DefinitionType extends QuestionDef>
@@ -74,5 +74,9 @@ public abstract class Question<DefinitionType extends QuestionDef>
 
     abstract boolean meetToConditionValue(@NonNull ConditionValueDef value);
     public abstract boolean meetToAnswerValue(@NonNull QuestionAnswerValue value);
-    public abstract void addAnswerToSet(@NonNull Set<QuestionAnswerValue> answerSet, @NonNull QuestionAnswerValue answerValue);
+
+    public SelectionType getSelectionType()
+    {
+        return definition.getSelectionType();
+    }
 }

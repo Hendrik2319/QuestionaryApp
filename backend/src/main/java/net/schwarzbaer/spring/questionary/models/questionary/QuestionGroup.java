@@ -2,7 +2,6 @@ package net.schwarzbaer.spring.questionary.models.questionary;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -84,12 +83,6 @@ public class QuestionGroup extends Question<QuestionGroupDef>
 
     @Override
     public boolean meetToAnswerValue(QuestionAnswerValue value)
-    {
-        throw new IllegalStateException("No answer can't target directly to a question group.");
-    }
-
-    @Override
-    public void addAnswerToSet(@NonNull Set<QuestionAnswerValue> answerSet, @NonNull QuestionAnswerValue answerValue)
     {
         throw new IllegalStateException("No answer can't target directly to a question group.");
     }
