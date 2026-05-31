@@ -41,4 +41,9 @@ public class ConditionsGroup
         for (Condition condition : conditions)
             condition.checkDefinitionStructure(parentQuestion);
     }
+
+    boolean isEmpty()
+    {
+        return conditions.isEmpty();
+    }
 }

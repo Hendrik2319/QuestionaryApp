@@ -79,4 +79,15 @@ public abstract class Question<DefinitionType extends QuestionDef>
     {
         return definition.getSelectionType();
     }
+
+    public boolean hasConditions()
+    {
+        return conditions!=null && !conditions.isEmpty();
+    }
+
+    public boolean isActive()
+    {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'isActive'");
+    }
 }

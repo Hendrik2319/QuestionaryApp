@@ -7,9 +7,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import net.schwarzbaer.spring.questionary.models.InitialValues;
-import net.schwarzbaer.spring.questionary.models.answers.QuestionAnswerDTO;
+import net.schwarzbaer.spring.questionary.models.InitialValuesDTO;
+import net.schwarzbaer.spring.questionary.models.answers.SetAnswerDTO;
 import net.schwarzbaer.spring.questionary.models.errors.WrongDefinitionStructureException;
+import net.schwarzbaer.spring.questionary.models.getpage.GetPageRequestDTO;
+import net.schwarzbaer.spring.questionary.models.getpage.GetPageResponseDTO;
 import net.schwarzbaer.spring.questionary.services.MainService;
 
 @RestController
@@ -25,14 +27,20 @@ public class MainController
         mainService.setQuestionary(data);
     }
 
-    @PostMapping("/setanswer")
-    public void receiveAnswer(@RequestBody QuestionAnswerDTO questionAnswerDTO)
+    @PostMapping("/getpage")
+    public GetPageResponseDTO getPage(@RequestBody GetPageRequestDTO getPageRequestDTO)
     {
-        mainService.setAnswer(questionAnswerDTO);
+        return mainService.getPage(getPageRequestDTO);
+    }
+
+    @PostMapping("/setanswer")
+    public void receiveAnswer(@RequestBody SetAnswerDTO setAnswerDTO)
+    {
+        mainService.setAnswer(setAnswerDTO);
     }
 
     @GetMapping("/getinit")
-    public InitialValues sendInitialValues()
+    public InitialValuesDTO sendInitialValues()
     {
         return mainService.generateInitialValues();
     }
