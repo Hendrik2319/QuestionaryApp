@@ -1,6 +1,8 @@
 package net.schwarzbaer.spring.questionary.models.questionary;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import lombok.NonNull;
 import net.schwarzbaer.spring.questionary.models.definitions.ChoiceQuestionDef;
@@ -27,23 +29,47 @@ public class ChoiceQuestion extends Question<ChoiceQuestionDef>
                 "ChoiceQuestion (id:\"%s\") has no field \"options\""
                 .formatted(id)
             );
-
+        
         if (optionDefs.isEmpty())
     		throw new WrongDefinitionStructureException(
                 "ChoiceQuestion (id:\"%s\") has an empty array in field \"options\""
                 .formatted(id)
             );
         
-        // for (OptionDef optionDef : optionDefs)
-        // {
-        //     optionDef
-        // }
+        Set<String> values = new HashSet<>();
+        for (OptionDef optionDef : optionDefs)
+        {
+            @NonNull
+            String optionValue = optionDef.value();
+
+            if (optionValue.isBlank())
+                throw new WrongDefinitionStructureException(
+                    "ChoiceQuestion (id:\"%s\") has an option with a blank value"
+                    .formatted(id, optionDef.value())
+                );
+
+            if (!values.add(optionValue))
+                throw new WrongDefinitionStructureException(
+                    "ChoiceQuestion (id:\"%s\") has more than one option with same value \"%s\""
+                    .formatted(id, optionDef.value())
+                );
+        }
     }
 
     @Override
     boolean meetToConditionValue(ConditionValueDef value)
     {
-        return value instanceof ConditionValueDef.StringValueDef;
+        if (value instanceof ConditionValueDef.StringValueDef stringValueDef)
+        {
+            @NonNull
+            String conditionValue = stringValueDef.value();
+
+            List<OptionDef> optionDefs = definition.getOptions();
+            for (OptionDef optionDef : optionDefs)
+                if (conditionValue.equals(optionDef.value()))
+                    return true;
+        }
+        return false;
     }
 
 }
