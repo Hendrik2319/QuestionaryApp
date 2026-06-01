@@ -1,8 +1,13 @@
 import type { ChangeEvent } from "react";
 import { useState } from "react";
 import { BackendAPI } from "../BackendAPI";
+import type { QuestionaryTitle } from "../Types";
 
-function UploadQuestionaryFile() {
+type Props = {
+    changeTitle: (title: string) => void,
+}
+
+function UploadQuestionaryFile( { changeTitle }: Readonly<Props> ) {
     const [file, setFile] = useState<File | null>(null);
 
     function handleFileChange(e: ChangeEvent<HTMLInputElement>) {
@@ -17,8 +22,9 @@ function UploadQuestionaryFile() {
         BackendAPI.uploadQuestionaryFile(
             "UploadQuestionaryFile.handleUpload",
             text,
-            (/* title: QuestionaryTitle */) => {
+            (data: QuestionaryTitle) => {
                 alert("Upload erfolgreich");
+                changeTitle( data.title );
             },
             (/* error */) => {
                 alert("Upload fehlgeschlagen (details in console)");
