@@ -10,7 +10,7 @@ import net.schwarzbaer.spring.questionary.models.definitions.OptionDef;
 @Getter @ToString(callSuper=true)
 public class ChoicePage extends Page
 {
-    private final List<OptionDef> options;
+    @NonNull private final List<OptionDef> options;
 
     protected ChoicePage(@NonNull String id, @NonNull String text, boolean isFirst, @NonNull List<OptionDef> options)
     {

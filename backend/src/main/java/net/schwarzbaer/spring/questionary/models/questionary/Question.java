@@ -4,6 +4,7 @@ import java.util.function.Function;
 
 import lombok.NonNull;
 import net.schwarzbaer.spring.questionary.models.PolymorphicValue;
+import net.schwarzbaer.spring.questionary.models.answers.QuestionaryAnswers;
 import net.schwarzbaer.spring.questionary.models.definitions.BoolQuestionDef;
 import net.schwarzbaer.spring.questionary.models.definitions.ChoiceQuestionDef;
 import net.schwarzbaer.spring.questionary.models.definitions.ConditionsGroupDef;
@@ -83,8 +84,8 @@ public abstract class Question<DefinitionType extends QuestionDef>
         return conditions!=null && !conditions.isEmpty();
     }
 
-    public boolean isActive()
+    public boolean isActive(@NonNull QuestionaryAnswers questionaryAnswers)
     {
-        return conditions==null || conditions.isFulfilled();
+        return conditions==null || conditions.isFulfilled(questionaryAnswers);
     }
 }

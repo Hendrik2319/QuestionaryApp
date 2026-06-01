@@ -16,10 +16,10 @@ import net.schwarzbaer.spring.questionary.models.errors.WrongDefinitionStructure
 
 public class Questionary
 {
-    private final @NonNull QuestionaryDef definition;
-    public  final @NonNull String title;
-    private final @NonNull Map<String,Question<?>> questions;
-    private final @NonNull List<Question<?>> questionPages;
+    @NonNull private final QuestionaryDef definition;
+    @NonNull public  final String title;
+    @NonNull private final Map<String,Question<?>> questions;
+    @NonNull private final List<Question<?>> questionPages;
 
     public Questionary(@NonNull QuestionaryDef definition) throws WrongDefinitionStructureException
     {
@@ -118,7 +118,7 @@ public class Questionary
             for (int i=pageIndex-1; i>=0; i--)
             {
                 Question<?> question = questionPages.get(i);
-                if (question.isActive())
+                if (question.isActive(questionaryAnswers))
                     return new QuestionPage(question, i);
             }
             break;
@@ -127,7 +127,7 @@ public class Questionary
             for (int i=pageIndex+1; i<questionPages.size(); i++)
             {
                 Question<?> question = questionPages.get(i);
-                if (question.isActive())
+                if (question.isActive(questionaryAnswers))
                     return new QuestionPage(question, i);
             }
             break;

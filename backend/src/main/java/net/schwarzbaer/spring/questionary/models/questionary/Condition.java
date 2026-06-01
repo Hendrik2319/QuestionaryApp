@@ -1,13 +1,16 @@
 package net.schwarzbaer.spring.questionary.models.questionary;
 
+import java.util.Set;
 import java.util.function.Function;
 
 import lombok.NonNull;
+import net.schwarzbaer.spring.questionary.models.answers.QuestionaryAnswers;
 import net.schwarzbaer.spring.questionary.models.definitions.ConditionDef;
 import net.schwarzbaer.spring.questionary.models.errors.WrongDefinitionStructureException;
 
 public class Condition
 {
+    @NonNull
     private final ConditionDef definition;
     private Question<?> referredQuestion;
 
@@ -52,9 +55,11 @@ public class Condition
             );
     }
 
-    public boolean isFulfilled()
+    public boolean isFulfilled(@NonNull QuestionaryAnswers questionaryAnswers)
     {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isFulfilled'");
+        return questionaryAnswers
+            .answers()
+            .getOrDefault(definition.questionId(), Set.of())
+            .contains(definition.value());
     }
 }

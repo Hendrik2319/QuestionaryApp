@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.function.Function;
 
 import lombok.NonNull;
+import net.schwarzbaer.spring.questionary.models.answers.QuestionaryAnswers;
 import net.schwarzbaer.spring.questionary.models.definitions.ConditionDef;
 import net.schwarzbaer.spring.questionary.models.definitions.ConditionsGroupDef;
 import net.schwarzbaer.spring.questionary.models.definitions.ConditionsGroupDef.AggregationType;
@@ -47,14 +48,14 @@ public class ConditionsGroup
         return conditions.isEmpty();
     }
 
-    public boolean isFulfilled()
+    public boolean isFulfilled(@NonNull QuestionaryAnswers questionaryAnswers)
     {
         if (conditions.isEmpty())
             return true;
 
         for (Condition condition : conditions)
         {
-            if (condition.isFulfilled())
+            if (condition.isFulfilled(questionaryAnswers))
             {
                 if (type==AggregationType.ONE) return true;
             }

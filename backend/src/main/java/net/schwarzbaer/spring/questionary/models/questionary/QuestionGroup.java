@@ -13,7 +13,7 @@ import net.schwarzbaer.spring.questionary.models.errors.WrongDefinitionStructure
 
 public class QuestionGroup extends Question<QuestionGroupDef>
 {
-    private final List<Question<?>> subQuestions;
+    @NonNull private final List<Question<?>> subQuestions;
 
     public QuestionGroup(QuestionGroup parentGroup, @NonNull QuestionIndex index, @NonNull QuestionGroupDef definition)
     {
