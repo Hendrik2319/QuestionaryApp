@@ -19,11 +19,11 @@ import lombok.ToString;
     @JsonSubTypes.Type(value = ChoicePage.Multiple.class, name = "MULTIPLE") 
 })
 @RequiredArgsConstructor @Getter @ToString
-public class Page
+public abstract class Page
 {
     @NonNull
     private final String id;
     @NonNull
-    private final String text;
+    private final String text; // TODO: add text from parent question group
     private final boolean isFirst;
 }

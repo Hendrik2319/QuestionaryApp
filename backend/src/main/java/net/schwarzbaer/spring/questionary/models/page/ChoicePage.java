@@ -8,7 +8,7 @@ import lombok.ToString;
 import net.schwarzbaer.spring.questionary.models.definitions.OptionDef;
 
 @Getter @ToString(callSuper=true)
-public class ChoicePage extends Page
+public abstract class ChoicePage extends Page
 {
     @NonNull private final List<OptionDef> options;
 
@@ -19,7 +19,7 @@ public class ChoicePage extends Page
     }
 
     @ToString(callSuper=true)
-    public class Single extends ChoicePage
+    public static class Single extends ChoicePage
     {
         public Single(@NonNull String id, @NonNull String text, boolean isFirst, @NonNull List<OptionDef> options)
         {
@@ -28,7 +28,7 @@ public class ChoicePage extends Page
     }
 
     @ToString(callSuper=true)
-    public class Multiple extends ChoicePage
+    public static class Multiple extends ChoicePage
     {
         public Multiple(@NonNull String id, @NonNull String text, boolean isFirst, @NonNull List<OptionDef> options)
         {

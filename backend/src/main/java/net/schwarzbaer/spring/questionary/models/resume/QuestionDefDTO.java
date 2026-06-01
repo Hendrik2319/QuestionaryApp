@@ -20,7 +20,7 @@ import lombok.ToString;
     @JsonSubTypes.Type(value = QuestionGroupDefDTO             .class, name = "GROUP"   ) 
 })
 @RequiredArgsConstructor @Getter @ToString
-public class QuestionDefDTO
+public abstract class QuestionDefDTO
 {
     @NonNull private final String id;
     @NonNull private final String text;

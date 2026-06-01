@@ -12,6 +12,7 @@ import net.schwarzbaer.spring.questionary.models.definitions.QuestionDef;
 import net.schwarzbaer.spring.questionary.models.definitions.QuestionGroupDef;
 import net.schwarzbaer.spring.questionary.models.definitions.SelectionType;
 import net.schwarzbaer.spring.questionary.models.errors.WrongDefinitionStructureException;
+import net.schwarzbaer.spring.questionary.models.page.Page;
 
 public abstract class Question<DefinitionType extends QuestionDef>
 {
@@ -48,7 +49,13 @@ public abstract class Question<DefinitionType extends QuestionDef>
         throw new IllegalArgumentException("Unknown sub type of QuestionDef");
     }
 
-    void checkDefinitionStructure(@NonNull Function<String, Question<?>> findQuestion) throws WrongDefinitionStructureException
+    void dereferenceQuestionIdsInConditions(@NonNull Function<String, Question<?>> findQuestion)
+    {
+        if (conditions!=null)
+            conditions.dereferenceQuestionIds(findQuestion);
+    }
+
+    void checkDefinitionStructure() throws WrongDefinitionStructureException
     {
         if (text==null)
     		throw new WrongDefinitionStructureException(
@@ -63,10 +70,11 @@ public abstract class Question<DefinitionType extends QuestionDef>
             );
         
         if (conditions!=null)
-            conditions.checkDefinitionStructure(this, findQuestion);
+            conditions.checkDefinitionStructure(this);
     }
 
     public abstract boolean meetsToValue(@NonNull PolymorphicValue value);
+    public abstract Page createPage(boolean isFirst);
 
     public SelectionType getSelectionType()
     {

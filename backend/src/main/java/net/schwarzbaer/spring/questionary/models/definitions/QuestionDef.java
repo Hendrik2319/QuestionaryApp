@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 import net.schwarzbaer.spring.questionary.models.resume.QuestionDefDTO;
@@ -28,7 +27,7 @@ public abstract class QuestionDef
     private ConditionsGroupDef conditions;
     private final SelectionType selectionType;
 
-    protected QuestionDef(@NonNull SelectionType selectionType)
+    protected QuestionDef(SelectionType selectionType)
     {
         this.selectionType = selectionType;
     }

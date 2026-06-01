@@ -8,7 +8,7 @@ import lombok.ToString;
 import net.schwarzbaer.spring.questionary.models.definitions.OptionDef;
 
 @Getter @ToString(callSuper=true)
-public class ChoiceQuestionDefDTO extends QuestionDefDTO
+public abstract class ChoiceQuestionDefDTO extends QuestionDefDTO
 {
     @NonNull private final List<OptionDef> options;
 

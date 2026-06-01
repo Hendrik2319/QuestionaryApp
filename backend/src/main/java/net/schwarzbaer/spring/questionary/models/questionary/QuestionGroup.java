@@ -10,6 +10,7 @@ import net.schwarzbaer.spring.questionary.models.PolymorphicValue;
 import net.schwarzbaer.spring.questionary.models.definitions.QuestionDef;
 import net.schwarzbaer.spring.questionary.models.definitions.QuestionGroupDef;
 import net.schwarzbaer.spring.questionary.models.errors.WrongDefinitionStructureException;
+import net.schwarzbaer.spring.questionary.models.page.Page;
 
 public class QuestionGroup extends Question<QuestionGroupDef>
 {
@@ -49,9 +50,18 @@ public class QuestionGroup extends Question<QuestionGroupDef>
     }
 
     @Override
-    void checkDefinitionStructure(@NonNull Function<String, Question<?>> findQuestion) throws WrongDefinitionStructureException
+    void dereferenceQuestionIdsInConditions(@NonNull Function<String, Question<?>> findQuestion)
     {
-        super.checkDefinitionStructure(findQuestion);
+        super.dereferenceQuestionIdsInConditions(findQuestion);
+
+        for (Question<?> subQuestion : subQuestions)
+            subQuestion.dereferenceQuestionIdsInConditions(findQuestion);
+    }
+
+    @Override
+    void checkDefinitionStructure() throws WrongDefinitionStructureException
+    {
+        super.checkDefinitionStructure();
 
         for (Question<?> subQuestion : subQuestions)
         {
@@ -61,13 +71,20 @@ public class QuestionGroup extends Question<QuestionGroupDef>
                     .formatted(subQuestion.id, id)
                 );
             
-            subQuestion.checkDefinitionStructure(findQuestion);
+            subQuestion.checkDefinitionStructure();
         }
     }
 
     @Override
     public boolean meetsToValue(PolymorphicValue value)
     {
-        throw new IllegalStateException("A question group has no values.");
+        throw new UnsupportedOperationException("A question group has no values.");
     }
+
+    @Override
+    public Page createPage(boolean isFirst)
+    {
+        throw new UnsupportedOperationException("There not page for a whole question group.");
+    }
+    
 }

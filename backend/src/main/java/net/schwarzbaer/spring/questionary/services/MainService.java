@@ -25,13 +25,13 @@ import net.schwarzbaer.spring.questionary.models.answers.SetAnswerDTO;
 import net.schwarzbaer.spring.questionary.models.definitions.QuestionaryDef;
 import net.schwarzbaer.spring.questionary.models.definitions.SelectionType;
 import net.schwarzbaer.spring.questionary.models.errors.WrongDefinitionStructureException;
-import net.schwarzbaer.spring.questionary.models.page.Page;
 import net.schwarzbaer.spring.questionary.models.questionary.Question;
 import net.schwarzbaer.spring.questionary.models.questionary.QuestionGroup;
+import net.schwarzbaer.spring.questionary.models.questionary.QuestionPage;
 import net.schwarzbaer.spring.questionary.models.questionary.Questionary;
-import net.schwarzbaer.spring.questionary.models.questionary.Questionary.QuestionPage;
 import net.schwarzbaer.spring.questionary.models.resume.QuestionDefDTO;
 import net.schwarzbaer.spring.questionary.models.resume.Resume;
+import net.schwarzbaer.spring.questionary.models.resume.Resume.QuestionAnswers;
 import tools.jackson.databind.ObjectMapper;
 
 @Service
@@ -56,14 +56,14 @@ public class MainService
         if (currentQuestionary==null)
             throw new NoSuchElementException("No questionary uploaded");
 
-        String questionId = getPageRequestDTO.questionId();
+        String currentQuestionId = getPageRequestDTO.questionId();
         @NonNull
         Direction direction = getPageRequestDTO.direction();
         @NonNull
         QuestionaryAnswers questionaryAnswers = getQuestionaryAnswers(getPageRequestDTO.sessionId());
 
         QuestionPage currentPage, nextPage;
-        if (questionId==null)
+        if (currentQuestionId==null)
         {
             currentPage = null;
             nextPage = currentQuestionary.getFirstPage();
@@ -72,9 +72,9 @@ public class MainService
         }
         else
         {
-            currentPage = currentQuestionary.getPage(questionId);
+            currentPage = currentQuestionary.getPage(currentQuestionId);
             if (currentPage==null)
-                throw new NoSuchElementException("Unknown ID of current question: %s".formatted(questionId));
+                throw new NoSuchElementException("Unknown ID of current question: %s".formatted(currentQuestionId));
             
             nextPage = currentQuestionary.getNextPage(
                 currentPage.pageIndex(),
@@ -91,7 +91,6 @@ public class MainService
                 nextPage = currentPage;
 
             case NEXT:
-                
                 @NonNull
                 List<QuestionDefDTO> allQuestions = new ArrayList<>();
                 currentQuestionary.forEachQuestionDef(
@@ -102,11 +101,15 @@ public class MainService
                                 : questionDef.createDTOForResume()
                         )
                 );
+
+                @NonNull
+                List<QuestionAnswers> allAnswers = new ArrayList<>();
+                questionaryAnswers.answers().forEach((questionId,answers) -> {
+                    allAnswers.add(new QuestionAnswers(questionId, answers));
+                });
+
                 return new GetPageResponseDTO.ResumeDTO(
-                    new Resume(
-                        allQuestions,
-                        null
-                    )
+                    new Resume( allQuestions, allAnswers )
                 );
 
             default:
@@ -117,11 +120,7 @@ public class MainService
         @NonNull
         Question<?> nextQuestion = nextPage.question();
         return new GetPageResponseDTO.PageDTO(
-            new Page(
-                nextQuestion.id,
-                nextQuestion.text,
-                nextPage.isFirst()
-            ),
+            nextQuestion.createPage( nextPage.isFirst() ),
             questionaryAnswers.answers().getOrDefault(nextQuestion.id, Set.of())
         );
     }

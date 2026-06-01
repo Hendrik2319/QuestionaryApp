@@ -45,6 +45,9 @@ public class Questionary
                 .filter(q -> !(q instanceof QuestionGroup))
                 .sorted(Comparator.comparing(q->q.index))
                 .toList();
+
+            for (Question<?> question : questions.values())
+                question.dereferenceQuestionIdsInConditions(questions::get);
         }
         else
             questionPages = new ArrayList<>();
@@ -71,20 +74,12 @@ public class Questionary
             throw new WrongDefinitionStructureException("First question in questionary is not allowed to have conditions.");
 
         for (Question<?> question : questions.values())
-            question.checkDefinitionStructure(questions::get);
+            question.checkDefinitionStructure();
     }
 
     public Question<?> getQuestion(@NonNull String questionId)
     {
         return questions.get(questionId);
-    }
-
-    public record QuestionPage(@NonNull Question<?> question, int pageIndex, boolean isFirst)
-    {
-        private QuestionPage(@NonNull Question<?> question, int pageIndex)
-        {
-            this(question, pageIndex, pageIndex==0);
-        }
     }
 
     public QuestionPage getPage(@NonNull String questionId)

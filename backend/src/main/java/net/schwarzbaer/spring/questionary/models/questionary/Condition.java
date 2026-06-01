@@ -13,11 +13,16 @@ import net.schwarzbaer.spring.questionary.models.errors.WrongDefinitionStructure
 public class Condition
 {
     @NonNull private final ConditionDef definition;
+    private Question<?> referredQuestion = null;
 
-    void checkDefinitionStructure(@NonNull Question<?> parentQuestion, @NonNull Function<String,Question<?>> findQuestion) throws WrongDefinitionStructureException
+    void dereferenceQuestionId(@NonNull Function<String,Question<?>> findQuestion)
+    {
+        referredQuestion = findQuestion.apply(definition.questionId());
+    }
+
+    void checkDefinitionStructure(@NonNull Question<?> parentQuestion) throws WrongDefinitionStructureException
     {
         String referredQuestionId = definition.questionId();
-        Question<?> referredQuestion = findQuestion.apply(referredQuestionId);
 
         if (referredQuestion==null)
     		throw new WrongDefinitionStructureException(
@@ -46,9 +51,11 @@ public class Condition
 
     public boolean isFulfilled(@NonNull QuestionaryAnswers questionaryAnswers)
     {
-        return questionaryAnswers
-            .answers()
-            .getOrDefault(definition.questionId(), Set.of())
-            .contains(definition.value());
+        return referredQuestion!=null
+            && referredQuestion.isActive(questionaryAnswers)
+            && questionaryAnswers
+                .answers()
+                .getOrDefault(definition.questionId(), Set.of())
+                .contains(definition.value());
     }
 }
