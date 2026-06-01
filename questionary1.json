@@ -85,13 +85,6 @@
                 "type": "ALL",
                 "conditions": [
                     {
-                        "question_id": "have children",
-                        "value": {
-                            "type": "BOOL",
-                            "value": true
-                        }
-                    },
-                    {
                         "question_id": "institution",
                         "value": {
                             "type": "STRING",
