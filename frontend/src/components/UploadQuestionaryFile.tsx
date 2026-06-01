@@ -1,4 +1,4 @@
-import type { ChangeEvent } from "react";
+import type { ChangeEvent, JSX } from "react";
 import { useState } from "react";
 import { BackendAPI } from "../BackendAPI";
 import type { QuestionaryTitle } from "../Types";
@@ -7,7 +7,7 @@ type Props = {
     changeTitle: (title: string) => void,
 }
 
-function UploadQuestionaryFile( { changeTitle }: Readonly<Props> ) {
+function UploadQuestionaryFile( { changeTitle }: Readonly<Props> ): JSX.Element {
     const [file, setFile] = useState<File | null>(null);
 
     function handleFileChange(e: ChangeEvent<HTMLInputElement>) {

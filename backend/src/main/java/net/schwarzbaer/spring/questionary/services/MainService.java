@@ -212,6 +212,7 @@ public class MainService
         for (String otherSessionId : sessionIds)
         {
             QuestionaryAnswers otherAnswers = allQuestionaryAnswers.get(otherSessionId);
+            if (otherAnswers==null) continue;
             Duration durationActive = Duration.between(otherAnswers.createTime(), now);
             if (durationActive.compareTo(maxActiveDuration) > 0)
                 allQuestionaryAnswers.remove(otherSessionId);
