@@ -90,7 +90,9 @@ public abstract class Question<DefinitionType extends QuestionDef>
 
     public boolean isActive(@NonNull QuestionaryAnswers questionaryAnswers)
     {
-        return conditions==null || conditions.isFulfilled(questionaryAnswers);
+        return
+            (parentGroup==null || parentGroup.isActive(questionaryAnswers)) &&
+            (conditions ==null || conditions.isFulfilled(questionaryAnswers));
     }
 
     protected List<String> getTexts()
