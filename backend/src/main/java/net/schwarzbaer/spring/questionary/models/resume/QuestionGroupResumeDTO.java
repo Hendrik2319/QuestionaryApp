@@ -7,11 +7,11 @@ import lombok.NonNull;
 import lombok.ToString;
 
 @Getter @ToString(callSuper=true)
-public class QuestionGroupDefDTO extends QuestionDefDTO
+public class QuestionGroupResumeDTO extends QuestionResumeDTO
 {
-    @NonNull private final List<QuestionDefDTO> subQuestions;
+    @NonNull private final List<QuestionResumeDTO> subQuestions;
 
-    public QuestionGroupDefDTO(@NonNull String id, @NonNull String text, @NonNull List<QuestionDefDTO> subQuestions)
+    public QuestionGroupResumeDTO(@NonNull String id, @NonNull String text, @NonNull List<QuestionResumeDTO> subQuestions)
     {
         super(id, text);
         this.subQuestions = subQuestions;

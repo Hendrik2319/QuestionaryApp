@@ -8,18 +8,18 @@ import lombok.ToString;
 import net.schwarzbaer.spring.questionary.models.definitions.OptionDef;
 
 @Getter @ToString(callSuper=true)
-public abstract class ChoiceQuestionDefDTO extends QuestionDefDTO
+public abstract class ChoiceQuestionResumeDTO extends QuestionResumeDTO
 {
     @NonNull private final List<OptionDef> answers;
 
-    protected ChoiceQuestionDefDTO(@NonNull String id, @NonNull String text, @NonNull List<OptionDef> answers)
+    protected ChoiceQuestionResumeDTO(@NonNull String id, @NonNull String text, @NonNull List<OptionDef> answers)
     {
         super(id, text);
         this.answers = answers;
     }
 
     @Getter @ToString(callSuper=true)
-    public static class MultipleDTO extends ChoiceQuestionDefDTO
+    public static class MultipleDTO extends ChoiceQuestionResumeDTO
     {
         public MultipleDTO(@NonNull String id, @NonNull String text, @NonNull List<OptionDef> answers)
         {
@@ -28,7 +28,7 @@ public abstract class ChoiceQuestionDefDTO extends QuestionDefDTO
     }
 
     @Getter @ToString(callSuper=true)
-    public static class SingleDTO extends ChoiceQuestionDefDTO
+    public static class SingleDTO extends ChoiceQuestionResumeDTO
     {
         public SingleDTO(@NonNull String id, @NonNull String text, @NonNull List<OptionDef> answers)
         {

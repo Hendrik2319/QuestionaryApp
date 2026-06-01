@@ -7,8 +7,8 @@ import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 import net.schwarzbaer.spring.questionary.models.answers.QuestionaryAnswers;
-import net.schwarzbaer.spring.questionary.models.resume.QuestionDefDTO;
-import net.schwarzbaer.spring.questionary.models.resume.QuestionGroupDefDTO;
+import net.schwarzbaer.spring.questionary.models.resume.QuestionResumeDTO;
+import net.schwarzbaer.spring.questionary.models.resume.QuestionGroupResumeDTO;
 
 @Setter @Getter @ToString(callSuper=true)
 public class QuestionGroupDef extends QuestionDef
@@ -20,19 +20,19 @@ public class QuestionGroupDef extends QuestionDef
         super(null);
     }
 
-    private @NonNull List<QuestionDefDTO> getSubQuestionDTOs(@NonNull QuestionaryAnswers questionaryAnswers)
+    private @NonNull List<QuestionResumeDTO> getSubQuestionDTOs(@NonNull QuestionaryAnswers questionaryAnswers)
     {
         return subQuestions==null
             ? List.of()
             : subQuestions
                 .stream()
-                .map(q -> q.createDTOForResume(questionaryAnswers))
+                .map(q -> q.createResumeDTO(questionaryAnswers))
                 .toList();
     }
 
     @Override
-    public QuestionGroupDefDTO createDTOForResume(@NonNull QuestionaryAnswers questionaryAnswers)
+    public QuestionGroupResumeDTO createResumeDTO(@NonNull QuestionaryAnswers questionaryAnswers)
     {
-        return new QuestionGroupDefDTO(getId(), getText(), getSubQuestionDTOs(questionaryAnswers));
+        return new QuestionGroupResumeDTO(getId(), getText(), getSubQuestionDTOs(questionaryAnswers));
     }
 }

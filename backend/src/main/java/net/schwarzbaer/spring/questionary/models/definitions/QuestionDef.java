@@ -8,7 +8,7 @@ import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 import net.schwarzbaer.spring.questionary.models.answers.QuestionaryAnswers;
-import net.schwarzbaer.spring.questionary.models.resume.QuestionDefDTO;
+import net.schwarzbaer.spring.questionary.models.resume.QuestionResumeDTO;
 
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
@@ -40,5 +40,5 @@ public abstract class QuestionDef
         this.text = other.text;
     }
 
-    public abstract QuestionDefDTO createDTOForResume(@NonNull QuestionaryAnswers questionaryAnswers);
+    public abstract QuestionResumeDTO createResumeDTO(@NonNull QuestionaryAnswers questionaryAnswers);
 }

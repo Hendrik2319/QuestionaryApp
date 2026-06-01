@@ -8,7 +8,7 @@ import lombok.Setter;
 import lombok.ToString;
 import net.schwarzbaer.spring.questionary.models.PolymorphicValue;
 import net.schwarzbaer.spring.questionary.models.answers.QuestionaryAnswers;
-import net.schwarzbaer.spring.questionary.models.resume.BoolQuestionDefDTO;
+import net.schwarzbaer.spring.questionary.models.resume.BoolQuestionResumeDTO;
 
 @Setter @Getter @ToString(callSuper=true)
 public class BoolQuestionDef extends QuestionDef
@@ -19,9 +19,9 @@ public class BoolQuestionDef extends QuestionDef
     }
     
     @Override
-    public BoolQuestionDefDTO createDTOForResume(@NonNull QuestionaryAnswers questionaryAnswers)
+    public BoolQuestionResumeDTO createResumeDTO(@NonNull QuestionaryAnswers questionaryAnswers)
     {
-        return new BoolQuestionDefDTO(
+        return new BoolQuestionResumeDTO(
             getId(),
             getText(),
             getAnswer(

@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import lombok.NonNull;
 import net.schwarzbaer.spring.questionary.models.page.Page;
-import net.schwarzbaer.spring.questionary.models.resume.QuestionDefDTO;
+import net.schwarzbaer.spring.questionary.models.resume.QuestionResumeDTO;
 
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
@@ -24,6 +24,6 @@ public interface GetPageResponseDTO
     public record PageDTO(@NonNull Page page, @NonNull Set<PolymorphicValue> pageData) implements GetPageResponseDTO
     {}
 
-    public record ResumeDTO(@NonNull List<QuestionDefDTO> questions) implements GetPageResponseDTO
+    public record ResumeDTO(@NonNull List<QuestionResumeDTO> questions) implements GetPageResponseDTO
     {}
 }

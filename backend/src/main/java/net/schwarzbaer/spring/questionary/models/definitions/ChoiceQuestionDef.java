@@ -9,8 +9,8 @@ import lombok.Setter;
 import lombok.ToString;
 import net.schwarzbaer.spring.questionary.models.PolymorphicValue;
 import net.schwarzbaer.spring.questionary.models.answers.QuestionaryAnswers;
-import net.schwarzbaer.spring.questionary.models.resume.ChoiceQuestionDefDTO.MultipleDTO;
-import net.schwarzbaer.spring.questionary.models.resume.ChoiceQuestionDefDTO.SingleDTO;
+import net.schwarzbaer.spring.questionary.models.resume.ChoiceQuestionResumeDTO.MultipleDTO;
+import net.schwarzbaer.spring.questionary.models.resume.ChoiceQuestionResumeDTO.SingleDTO;
 
 @Setter @Getter @ToString(callSuper=true)
 public abstract class ChoiceQuestionDef extends QuestionDef
@@ -43,7 +43,7 @@ public abstract class ChoiceQuestionDef extends QuestionDef
         }
 
         @Override
-        public MultipleDTO createDTOForResume(@NonNull QuestionaryAnswers questionaryAnswers)
+        public MultipleDTO createResumeDTO(@NonNull QuestionaryAnswers questionaryAnswers)
         {
             return new MultipleDTO(getId(), getText(), buildAnswerList(questionaryAnswers));
         }
@@ -58,7 +58,7 @@ public abstract class ChoiceQuestionDef extends QuestionDef
         }
 
         @Override
-        public SingleDTO createDTOForResume(@NonNull QuestionaryAnswers questionaryAnswers)
+        public SingleDTO createResumeDTO(@NonNull QuestionaryAnswers questionaryAnswers)
         {
             return new SingleDTO(getId(), getText(), buildAnswerList(questionaryAnswers));
         }

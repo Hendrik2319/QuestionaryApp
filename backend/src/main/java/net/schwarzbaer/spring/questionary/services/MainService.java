@@ -29,7 +29,7 @@ import net.schwarzbaer.spring.questionary.models.questionary.Question;
 import net.schwarzbaer.spring.questionary.models.questionary.QuestionGroup;
 import net.schwarzbaer.spring.questionary.models.questionary.QuestionPage;
 import net.schwarzbaer.spring.questionary.models.questionary.Questionary;
-import net.schwarzbaer.spring.questionary.models.resume.QuestionDefDTO;
+import net.schwarzbaer.spring.questionary.models.resume.QuestionResumeDTO;
 import tools.jackson.databind.ObjectMapper;
 
 @Service
@@ -103,13 +103,13 @@ public class MainService
 
             case NEXT:
                 @NonNull
-                List<QuestionDefDTO> allQuestions = new ArrayList<>();
+                List<QuestionResumeDTO> allQuestions = new ArrayList<>();
                 currentQuestionary.forEachQuestionDef(
                     questionDef ->
                         allQuestions.add(
                             questionDef==null
                                 ? null
-                                : questionDef.createDTOForResume(questionaryAnswers)
+                                : questionDef.createResumeDTO(questionaryAnswers)
                         )
                 );
                 return new GetPageResponseDTO.ResumeDTO( allQuestions );
@@ -190,7 +190,13 @@ public class MainService
         removeOldSessions(now, Duration.ofHours(5));
         allQuestionaryAnswers.put(sessionId, new QuestionaryAnswers(sessionId, now));
 
-        return new InitialValuesDTO(sessionId, currentQuestionary == null);
+        return new InitialValuesDTO(
+            sessionId,
+            currentQuestionary == null,
+            currentQuestionary == null
+                ? null
+                : currentQuestionary.title
+        );
     }
 
     private String getNewSessionId()

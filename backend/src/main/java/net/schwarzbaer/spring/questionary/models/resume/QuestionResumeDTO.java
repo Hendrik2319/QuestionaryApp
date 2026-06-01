@@ -14,13 +14,13 @@ import lombok.ToString;
     property = "type"
 )
 @JsonSubTypes({
-    @JsonSubTypes.Type(value = BoolQuestionDefDTO              .class, name = "BOOL"    ),
-    @JsonSubTypes.Type(value = ChoiceQuestionDefDTO.SingleDTO  .class, name = "SINGLE"  ),
-    @JsonSubTypes.Type(value = ChoiceQuestionDefDTO.MultipleDTO.class, name = "MULTIPLE"),
-    @JsonSubTypes.Type(value = QuestionGroupDefDTO             .class, name = "GROUP"   ) 
+    @JsonSubTypes.Type(value = BoolQuestionResumeDTO              .class, name = "BOOL"    ),
+    @JsonSubTypes.Type(value = ChoiceQuestionResumeDTO.SingleDTO  .class, name = "SINGLE"  ),
+    @JsonSubTypes.Type(value = ChoiceQuestionResumeDTO.MultipleDTO.class, name = "MULTIPLE"),
+    @JsonSubTypes.Type(value = QuestionGroupResumeDTO             .class, name = "GROUP"   ) 
 })
 @RequiredArgsConstructor @Getter @ToString
-public abstract class QuestionDefDTO
+public abstract class QuestionResumeDTO
 {
     @NonNull private final String id;
     @NonNull private final String text;

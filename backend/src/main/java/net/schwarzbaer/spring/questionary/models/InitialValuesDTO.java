@@ -4,6 +4,7 @@ import lombok.NonNull;
 
 public record InitialValuesDTO (
     @NonNull String sessionId,
-    boolean needQuestionary
+    boolean needQuestionary,
+    String title
 )
 {}
