@@ -31,16 +31,10 @@ public class ConditionsGroup
         }
     }
 
-    void dereferenceIds(Function<String,Question<?>> findQuestion)
+    void checkDefinitionStructure(@NonNull Question<?> parentQuestion, @NonNull Function<String, Question<?>> findQuestion) throws WrongDefinitionStructureException
     {
         for (Condition condition : conditions)
-            condition.dereferenceIds(findQuestion);
-    }
-
-    void checkDefinitionStructure(@NonNull Question<?> parentQuestion) throws WrongDefinitionStructureException
-    {
-        for (Condition condition : conditions)
-            condition.checkDefinitionStructure(parentQuestion);
+            condition.checkDefinitionStructure(parentQuestion, findQuestion);
     }
 
     boolean isEmpty()

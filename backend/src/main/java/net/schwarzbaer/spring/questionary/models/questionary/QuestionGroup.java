@@ -49,18 +49,9 @@ public class QuestionGroup extends Question<QuestionGroupDef>
     }
 
     @Override
-    void dereferenceIdsInConditions(@NonNull Function<String, Question<?>> findQuestion)
+    void checkDefinitionStructure(@NonNull Function<String, Question<?>> findQuestion) throws WrongDefinitionStructureException
     {
-        super.dereferenceIdsInConditions(findQuestion);
-
-        for (Question<?> subQuestion : subQuestions)
-            subQuestion.dereferenceIdsInConditions(findQuestion);
-    }
-
-    @Override
-    void checkDefinitionStructure() throws WrongDefinitionStructureException
-    {
-        super.checkDefinitionStructure();
+        super.checkDefinitionStructure(findQuestion);
 
         for (Question<?> subQuestion : subQuestions)
         {
@@ -70,7 +61,7 @@ public class QuestionGroup extends Question<QuestionGroupDef>
                     .formatted(subQuestion.id, id)
                 );
             
-            subQuestion.checkDefinitionStructure();
+            subQuestion.checkDefinitionStructure(findQuestion);
         }
     }
 

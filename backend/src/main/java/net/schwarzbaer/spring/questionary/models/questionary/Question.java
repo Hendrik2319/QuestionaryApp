@@ -48,13 +48,7 @@ public abstract class Question<DefinitionType extends QuestionDef>
         throw new IllegalArgumentException("Unknown sub type of QuestionDef");
     }
 
-    void dereferenceIdsInConditions(@NonNull Function<String,Question<?>> findQuestion)
-    {
-        if (conditions!=null)
-            conditions.dereferenceIds(findQuestion);
-    }
-
-    void checkDefinitionStructure() throws WrongDefinitionStructureException
+    void checkDefinitionStructure(@NonNull Function<String, Question<?>> findQuestion) throws WrongDefinitionStructureException
     {
         if (text==null)
     		throw new WrongDefinitionStructureException(
@@ -69,7 +63,7 @@ public abstract class Question<DefinitionType extends QuestionDef>
             );
         
         if (conditions!=null)
-            conditions.checkDefinitionStructure(this);
+            conditions.checkDefinitionStructure(this, findQuestion);
     }
 
     public abstract boolean meetsToValue(@NonNull PolymorphicValue value);

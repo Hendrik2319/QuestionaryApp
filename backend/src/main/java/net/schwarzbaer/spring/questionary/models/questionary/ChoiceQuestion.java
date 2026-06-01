@@ -3,6 +3,7 @@ package net.schwarzbaer.spring.questionary.models.questionary;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 
 import lombok.NonNull;
 import net.schwarzbaer.spring.questionary.models.PolymorphicValue;
@@ -18,9 +19,9 @@ public class ChoiceQuestion extends Question<ChoiceQuestionDef>
     }
     
     @Override
-    void checkDefinitionStructure() throws WrongDefinitionStructureException
+    void checkDefinitionStructure(@NonNull Function<String, Question<?>> findQuestion) throws WrongDefinitionStructureException
     {
-        super.checkDefinitionStructure();
+        super.checkDefinitionStructure(findQuestion);
 
         List<OptionDef> optionDefs = definition.getOptions();
 

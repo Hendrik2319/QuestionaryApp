@@ -4,31 +4,20 @@ import java.util.Set;
 import java.util.function.Function;
 
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import net.schwarzbaer.spring.questionary.models.answers.QuestionaryAnswers;
 import net.schwarzbaer.spring.questionary.models.definitions.ConditionDef;
 import net.schwarzbaer.spring.questionary.models.errors.WrongDefinitionStructureException;
 
+@RequiredArgsConstructor
 public class Condition
 {
-    @NonNull
-    private final ConditionDef definition;
-    private Question<?> referredQuestion;
+    @NonNull private final ConditionDef definition;
 
-    Condition(@NonNull ConditionDef definition)
-    {
-        this.definition = definition;
-        referredQuestion = null;
-    }
-
-	void dereferenceIds(@NonNull Function<String,Question<?>> findQuestion)
-	{
-        String referredQuestionId = definition.questionId();
-        referredQuestion = findQuestion.apply(referredQuestionId);
-	}
-
-    void checkDefinitionStructure(@NonNull Question<?> parentQuestion) throws WrongDefinitionStructureException
+    void checkDefinitionStructure(@NonNull Question<?> parentQuestion, @NonNull Function<String,Question<?>> findQuestion) throws WrongDefinitionStructureException
     {
         String referredQuestionId = definition.questionId();
+        Question<?> referredQuestion = findQuestion.apply(referredQuestionId);
 
         if (referredQuestion==null)
     		throw new WrongDefinitionStructureException(
