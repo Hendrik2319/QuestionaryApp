@@ -70,7 +70,10 @@ public class Questionary
 
     public void checkDefinitionStructure() throws WrongDefinitionStructureException
     {
-        if (!questionPages.isEmpty() && questionPages.getFirst().hasConditions())
+        if (questionPages.isEmpty())
+            throw new WrongDefinitionStructureException("There are no showable questions in questionary.");
+
+        if (questionPages.getFirst().hasConditions())
             throw new WrongDefinitionStructureException("First question in questionary is not allowed to have conditions.");
 
         for (Question<?> question : questions.values())
@@ -102,11 +105,17 @@ public class Questionary
         return new QuestionPage(questionPages.getFirst(), 0, true);
     }
 
+    public QuestionPage getLastPage(@NonNull QuestionaryAnswers questionaryAnswers)
+    {
+        return getNextPage(questionPages.size(), Direction.PREV, questionaryAnswers);
+    }
+
     public QuestionPage getNextPage(int pageIndex, @NonNull Direction direction, @NonNull QuestionaryAnswers questionaryAnswers)
     {
         switch (direction)
         {
         case PREV:
+            pageIndex = Math.min(pageIndex, questionPages.size());
             for (int i=pageIndex-1; i>=0; i--)
             {
                 Question<?> question = questionPages.get(i);
@@ -116,6 +125,7 @@ public class Questionary
             break;
 
         case NEXT:
+            pageIndex = Math.max(pageIndex, -1);
             for (int i=pageIndex+1; i<questionPages.size(); i++)
             {
                 Question<?> question = questionPages.get(i);

@@ -64,9 +64,22 @@ public class MainService
         if (currentQuestionId==null)
         {
             currentPage = null;
-            nextPage = currentQuestionary.getFirstPage();
-            if (nextPage==null)
-                throw new NoSuchElementException("There is no first page in this questionary");
+            switch (direction)
+            {
+            case PREV:
+                nextPage = currentQuestionary.getLastPage(questionaryAnswers);
+                if (nextPage==null)
+                    throw new NoSuchElementException("There is no last page in this questionary"); // is nearly not possible -> IllegalStateException?
+                break;
+
+            case NEXT:
+                nextPage = currentQuestionary.getFirstPage();
+                if (nextPage==null)
+                    throw new NoSuchElementException("There is no first page in this questionary"); // is nearly not possible -> IllegalStateException?
+                break;
+
+            default: throw new IllegalStateException("GetPageRequestDTO.Direction has an unexpected enum value: %s".formatted(direction));
+            }
         }
         else
         {
