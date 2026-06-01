@@ -1,11 +1,14 @@
 package net.schwarzbaer.spring.questionary.models.definitions;
 
 import java.util.List;
+import java.util.Set;
 
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
+import net.schwarzbaer.spring.questionary.models.PolymorphicValue;
+import net.schwarzbaer.spring.questionary.models.answers.QuestionaryAnswers;
 import net.schwarzbaer.spring.questionary.models.resume.ChoiceQuestionDefDTO.MultipleDTO;
 import net.schwarzbaer.spring.questionary.models.resume.ChoiceQuestionDefDTO.SingleDTO;
 
@@ -19,12 +22,14 @@ public abstract class ChoiceQuestionDef extends QuestionDef
         super(selectionType);
     }
 
-    protected @NonNull List<OptionDef> getCopyOfOptions()
+    protected @NonNull List<OptionDef> buildAnswerList(@NonNull QuestionaryAnswers questionaryAnswers)
     {
-        return options==null
+        Set<PolymorphicValue> answers = questionaryAnswers.answers().get(getId());
+        return options==null || options.isEmpty() || answers==null || answers.isEmpty()
             ? List.of()
             : options
                 .stream()
+                .filter(opt -> answers.contains(new PolymorphicValue.StringValue(opt.value())))
                 .map(OptionDef::createCopy)
                 .toList();
     }
@@ -38,9 +43,9 @@ public abstract class ChoiceQuestionDef extends QuestionDef
         }
 
         @Override
-        public MultipleDTO createDTOForResume()
+        public MultipleDTO createDTOForResume(@NonNull QuestionaryAnswers questionaryAnswers)
         {
-            return new MultipleDTO(getId(), getText(), getCopyOfOptions());
+            return new MultipleDTO(getId(), getText(), buildAnswerList(questionaryAnswers));
         }
     }
     
@@ -53,9 +58,9 @@ public abstract class ChoiceQuestionDef extends QuestionDef
         }
 
         @Override
-        public SingleDTO createDTOForResume()
+        public SingleDTO createDTOForResume(@NonNull QuestionaryAnswers questionaryAnswers)
         {
-            return new SingleDTO(getId(), getText(), getCopyOfOptions());
+            return new SingleDTO(getId(), getText(), buildAnswerList(questionaryAnswers));
         }
     }
 }

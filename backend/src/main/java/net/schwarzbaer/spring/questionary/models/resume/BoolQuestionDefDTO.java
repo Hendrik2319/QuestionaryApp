@@ -1,13 +1,17 @@
 package net.schwarzbaer.spring.questionary.models.resume;
 
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.ToString;
 
-@ToString(callSuper=true)
+@Getter @ToString(callSuper=true)
 public class BoolQuestionDefDTO extends QuestionDefDTO
 {
-    public BoolQuestionDefDTO(@NonNull String id, @NonNull String text)
+    private final Boolean answer;
+
+    public BoolQuestionDefDTO(@NonNull String id, @NonNull String text, Boolean answer)
     {
         super(id, text);
+        this.answer = answer;
     }
 }

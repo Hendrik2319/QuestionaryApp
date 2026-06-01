@@ -30,8 +30,6 @@ import net.schwarzbaer.spring.questionary.models.questionary.QuestionGroup;
 import net.schwarzbaer.spring.questionary.models.questionary.QuestionPage;
 import net.schwarzbaer.spring.questionary.models.questionary.Questionary;
 import net.schwarzbaer.spring.questionary.models.resume.QuestionDefDTO;
-import net.schwarzbaer.spring.questionary.models.resume.Resume;
-import net.schwarzbaer.spring.questionary.models.resume.Resume.QuestionAnswers;
 import tools.jackson.databind.ObjectMapper;
 
 @Service
@@ -98,19 +96,10 @@ public class MainService
                         allQuestions.add(
                             questionDef==null
                                 ? null
-                                : questionDef.createDTOForResume()
+                                : questionDef.createDTOForResume(questionaryAnswers)
                         )
                 );
-
-                @NonNull
-                List<QuestionAnswers> allAnswers = new ArrayList<>();
-                questionaryAnswers.answers().forEach((questionId,answers) -> {
-                    allAnswers.add(new QuestionAnswers(questionId, answers));
-                });
-
-                return new GetPageResponseDTO.ResumeDTO(
-                    new Resume( allQuestions, allAnswers )
-                );
+                return new GetPageResponseDTO.ResumeDTO( allQuestions );
 
             default:
                 throw new IllegalStateException("GetPageRequestDTO.Direction has an unexpected enum value: %s".formatted(direction));

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
+import net.schwarzbaer.spring.questionary.models.answers.QuestionaryAnswers;
 import net.schwarzbaer.spring.questionary.models.resume.QuestionDefDTO;
 import net.schwarzbaer.spring.questionary.models.resume.QuestionGroupDefDTO;
 
@@ -19,19 +20,19 @@ public class QuestionGroupDef extends QuestionDef
         super(null);
     }
 
-    private @NonNull List<QuestionDefDTO> getSubQuestionDTOs()
+    private @NonNull List<QuestionDefDTO> getSubQuestionDTOs(@NonNull QuestionaryAnswers questionaryAnswers)
     {
         return subQuestions==null
             ? List.of()
             : subQuestions
                 .stream()
-                .map(QuestionDef::createDTOForResume)
+                .map(q -> q.createDTOForResume(questionaryAnswers))
                 .toList();
     }
 
     @Override
-    public QuestionGroupDefDTO createDTOForResume()
+    public QuestionGroupDefDTO createDTOForResume(@NonNull QuestionaryAnswers questionaryAnswers)
     {
-        return new QuestionGroupDefDTO(getId(), getText(), getSubQuestionDTOs());
+        return new QuestionGroupDefDTO(getId(), getText(), getSubQuestionDTOs(questionaryAnswers));
     }
 }

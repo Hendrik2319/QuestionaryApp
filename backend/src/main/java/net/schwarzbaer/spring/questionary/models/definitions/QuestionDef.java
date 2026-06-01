@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
+import net.schwarzbaer.spring.questionary.models.answers.QuestionaryAnswers;
 import net.schwarzbaer.spring.questionary.models.resume.QuestionDefDTO;
 
 @JsonTypeInfo(
@@ -32,11 +34,11 @@ public abstract class QuestionDef
         this.selectionType = selectionType;
     }
 
-    protected void setAllValuesExceptConditions(QuestionDef other)
+    protected void setAllValuesExceptConditions(@NonNull QuestionDef other)
     {
         this.id   = other.id;
         this.text = other.text;
     }
 
-    public abstract QuestionDefDTO createDTOForResume();
+    public abstract QuestionDefDTO createDTOForResume(@NonNull QuestionaryAnswers questionaryAnswers);
 }
