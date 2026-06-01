@@ -7,11 +7,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import net.schwarzbaer.spring.questionary.models.GetPageRequestDTO;
+import net.schwarzbaer.spring.questionary.models.GetPageResponseDTO;
 import net.schwarzbaer.spring.questionary.models.InitialValuesDTO;
+import net.schwarzbaer.spring.questionary.models.QuestionaryTitle;
 import net.schwarzbaer.spring.questionary.models.answers.SetAnswerDTO;
 import net.schwarzbaer.spring.questionary.models.errors.WrongDefinitionStructureException;
-import net.schwarzbaer.spring.questionary.models.getpage.GetPageRequestDTO;
-import net.schwarzbaer.spring.questionary.models.getpage.GetPageResponseDTO;
 import net.schwarzbaer.spring.questionary.services.MainService;
 
 @RestController
@@ -22,9 +23,9 @@ public class MainController
     private final MainService mainService;
 
     @PostMapping("/setquestionary")
-    public void receiveQuestionary(@RequestBody String data) throws WrongDefinitionStructureException
+    public QuestionaryTitle receiveQuestionary(@RequestBody String data) throws WrongDefinitionStructureException
     {
-        mainService.setQuestionary(data);
+        return mainService.setQuestionary(data);
     }
 
     @PostMapping("/getpage")

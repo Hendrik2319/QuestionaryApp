@@ -14,20 +14,24 @@ import org.springframework.stereotype.Service;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import net.schwarzbaer.spring.questionary.models.GetPageRequestDTO;
+import net.schwarzbaer.spring.questionary.models.GetPageRequestDTO.Direction;
+import net.schwarzbaer.spring.questionary.models.GetPageResponseDTO;
 import net.schwarzbaer.spring.questionary.models.InitialValuesDTO;
+import net.schwarzbaer.spring.questionary.models.QuestionaryTitle;
 import net.schwarzbaer.spring.questionary.models.answers.QuestionAnswerValue;
 import net.schwarzbaer.spring.questionary.models.answers.QuestionaryAnswers;
 import net.schwarzbaer.spring.questionary.models.answers.SetAnswerDTO;
 import net.schwarzbaer.spring.questionary.models.definitions.QuestionaryDef;
 import net.schwarzbaer.spring.questionary.models.definitions.SelectionType;
 import net.schwarzbaer.spring.questionary.models.errors.WrongDefinitionStructureException;
-import net.schwarzbaer.spring.questionary.models.getpage.GetPageRequestDTO;
-import net.schwarzbaer.spring.questionary.models.getpage.GetPageRequestDTO.Direction;
-import net.schwarzbaer.spring.questionary.models.getpage.GetPageResponseDTO;
+import net.schwarzbaer.spring.questionary.models.page.Page;
 import net.schwarzbaer.spring.questionary.models.questionary.Question;
 import net.schwarzbaer.spring.questionary.models.questionary.QuestionGroup;
 import net.schwarzbaer.spring.questionary.models.questionary.Questionary;
 import net.schwarzbaer.spring.questionary.models.questionary.Questionary.QuestionPage;
+import net.schwarzbaer.spring.questionary.models.resume.QuestionDefDTO;
+import net.schwarzbaer.spring.questionary.models.resume.Resume;
 import tools.jackson.databind.ObjectMapper;
 
 @Service
@@ -39,12 +43,12 @@ public class MainService
     private final SessionIdGenerator sessionIdGenerator = new SessionIdGenerator(8);
     private final Map<String,QuestionaryAnswers> allQuestionaryAnswers = new HashMap<>();
 
-    public void setQuestionary(@NonNull String data) throws WrongDefinitionStructureException
+    public QuestionaryTitle setQuestionary(@NonNull String data) throws WrongDefinitionStructureException
     {
         QuestionaryDef definition = objectMapper.readValue(data, QuestionaryDef.class);
         currentQuestionary = new Questionary(definition);
         currentQuestionary.checkDefinitionStructure();
-        //System.out.printf("[POST] /api/setquestionary : receiveQuestionary()%n   data = \"%s\"%n   -> value = %s%n", data, definition);
+        return new QuestionaryTitle(currentQuestionary.title);
     }
 
     public GetPageResponseDTO getPage(@NonNull GetPageRequestDTO getPageRequestDTO) throws NoSuchElementException
@@ -87,15 +91,39 @@ public class MainService
                 nextPage = currentPage;
 
             case NEXT:
-                // page: null
-                // resume: generate()
-                return /* DTO */ null;
+                
+                @NonNull
+                List<QuestionDefDTO> allQuestions = new ArrayList<>();
+                currentQuestionary.forEachQuestionDef(
+                    questionDef ->
+                        allQuestions.add(
+                            questionDef==null
+                                ? null
+                                : questionDef.createDTOForResume()
+                        )
+                );
+                return new GetPageResponseDTO.ResumeDTO(
+                    new Resume(
+                        allQuestions,
+                        null
+                    )
+                );
+
+            default:
+                throw new IllegalStateException("GetPageRequestDTO.Direction has an unexpected enum value: %s".formatted(direction));
             }
         }
 
-        // page: nextPage
-        // resume: null
-        return /* DTO */ null;
+        @NonNull
+        Question<?> nextQuestion = nextPage.question();
+        return new GetPageResponseDTO.PageDTO(
+            new Page(
+                nextQuestion.id,
+                nextQuestion.text,
+                nextPage.isFirst()
+            ),
+            questionaryAnswers.answers().getOrDefault(nextQuestion.id, Set.of())
+        );
     }
 
     public void setAnswer(@NonNull SetAnswerDTO setAnswerDTO) throws NoSuchElementException, IllegalArgumentException

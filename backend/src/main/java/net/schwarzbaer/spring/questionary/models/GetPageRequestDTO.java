@@ -1,4 +1,4 @@
-package net.schwarzbaer.spring.questionary.models.getpage;
+package net.schwarzbaer.spring.questionary.models;
 
 import lombok.NonNull;
 

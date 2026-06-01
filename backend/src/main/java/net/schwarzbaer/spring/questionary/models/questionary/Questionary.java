@@ -5,20 +5,21 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import lombok.NonNull;
+import net.schwarzbaer.spring.questionary.models.GetPageRequestDTO.Direction;
 import net.schwarzbaer.spring.questionary.models.answers.QuestionaryAnswers;
 import net.schwarzbaer.spring.questionary.models.definitions.QuestionDef;
 import net.schwarzbaer.spring.questionary.models.definitions.QuestionaryDef;
 import net.schwarzbaer.spring.questionary.models.errors.WrongDefinitionStructureException;
-import net.schwarzbaer.spring.questionary.models.getpage.GetPageRequestDTO.Direction;
 
 public class Questionary
 {
-    private final QuestionaryDef definition;
-    private final @NonNull String title;
-    private final Map<String,Question<?>> questions;
-    private final List<Question<?>> questionPages;
+    private final @NonNull QuestionaryDef definition;
+    public  final @NonNull String title;
+    private final @NonNull Map<String,Question<?>> questions;
+    private final @NonNull List<Question<?>> questionPages;
 
     public Questionary(@NonNull QuestionaryDef definition) throws WrongDefinitionStructureException
     {
@@ -133,5 +134,10 @@ public class Questionary
         }
 
         return null;
+    }
+
+    public void forEachQuestionDef(Consumer<QuestionDef> action)
+    {
+        definition.questions().forEach(action);
     }
 }

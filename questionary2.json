@@ -1,0 +1,116 @@
+{
+    "title": "Verkehr in Berlin",
+    "questions": [
+        {
+            "id": "vehicle",
+            "text": "Mit welchen Verkehrsmitteln fahren Sie zur Arbeit (mehrere Antworten möglich)?",
+            "type": "MULTIPLE",
+            "options": [
+                { "label": "Fahrrad"           , "value": "bicycle" },
+                { "label": "Auto"              , "value": "car"     },
+                { "label": "Bus"               , "value": "bus"     },
+                { "label": "zu Fuß"            , "value": "walking" },
+                { "label": "U-Bahn"            , "value": "subway"  },
+                { "label": "Regionalzug"       , "value": "train"   },
+                { "label": "keinem von diesen" , "value": "none"    }
+            ]
+        },
+        {
+            "id": "ticket type",
+            "text": "Welche Fahrscheinart benutzen Sie hauptsächlich, wenn Sie mit öffentlichen Verkehrsmitteln zur Arbeit fahren?",
+            "type": "SINGLE",
+            "options": [
+                { "label": "Deutschlandticket" , "value": "germany ticket"  },
+                { "label": "4-Fahrten-Karte"   , "value": "4-ride pass"     },
+                { "label": "Einzelkarte"       , "value": "standard ticket" },
+                { "label": "fahre schwarz"     , "value": "without ticket"  },
+                { "label": "keine Angabe"      , "value": "no input"        }
+            ],
+            "conditions": {
+                "type": "ONE",
+                "conditions": [
+                    {
+                        "question_id": "vehicle",
+                        "value": {
+                            "type": "STRING",
+                            "value": "bus"
+                        }
+                    },
+                    {
+                        "question_id": "vehicle",
+                        "value": {
+                            "type": "STRING",
+                            "value": "subway"
+                        }
+                    },
+                    {
+                        "question_id": "vehicle",
+                        "value": {
+                            "type": "STRING",
+                            "value": "train"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": "delay",
+            "text": "Wie häufig kommen Sie wegen des ÖPNV zu spät zur Arbeit?",
+            "type": "SINGLE",
+            "options": [
+                { "label": "nie"         , "value": "0" },
+                { "label": "fast nie"    , "value": "1" },
+                { "label": "gelegentlich", "value": "2" },
+                { "label": "häufig"      , "value": "3" },
+                { "label": "ständig"     , "value": "4" }
+            ],
+            "conditions": {
+                "type": "ONE",
+                "conditions": [
+                    {
+                        "question_id": "vehicle",
+                        "value": {
+                            "type": "STRING",
+                            "value": "bus"
+                        }
+                    },
+                    {
+                        "question_id": "vehicle",
+                        "value": {
+                            "type": "STRING",
+                            "value": "subway"
+                        }
+                    },
+                    {
+                        "question_id": "vehicle",
+                        "value": {
+                            "type": "STRING",
+                            "value": "train"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": "car",
+            "text": "Nutzen Sie dazu ihr eigenes Auto oder einen Dienstwagen?",
+            "type": "SINGLE",
+            "options": [
+                { "label": "eigenes Auto" , "value": "own car"     },
+                { "label": "Dienstwagen"  , "value": "company car" }
+            ],
+            "conditions": {
+                "type": "ONE",
+                "conditions": [
+                    {
+                        "question_id": "vehicle",
+                        "value": {
+                            "type": "STRING",
+                            "value": "car"
+                        }
+                    }
+                ]
+            }
+        }
+	]
+}

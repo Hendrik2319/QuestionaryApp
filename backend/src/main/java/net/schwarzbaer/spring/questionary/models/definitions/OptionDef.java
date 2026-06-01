@@ -6,4 +6,9 @@ public record OptionDef (
     @NonNull String value,
     String label
 )
-{}
+{
+    public OptionDef createCopy()
+    {
+        return new OptionDef(value, label);
+    }
+}

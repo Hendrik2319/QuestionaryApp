@@ -1,9 +1,12 @@
-package net.schwarzbaer.spring.questionary.models.getpage;
+package net.schwarzbaer.spring.questionary.models.page;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import lombok.Getter;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
@@ -15,8 +18,12 @@ import lombok.NonNull;
     @JsonSubTypes.Type(value = ChoicePage.Single  .class, name = "SINGLE"  ),
     @JsonSubTypes.Type(value = ChoicePage.Multiple.class, name = "MULTIPLE") 
 })
+@RequiredArgsConstructor @Getter @ToString
 public class Page
 {
-    @NonNull private final String id;
-    @NonNull private final String text;
+    @NonNull
+    private final String id;
+    @NonNull
+    private final String text;
+    private final boolean isFirst;
 }

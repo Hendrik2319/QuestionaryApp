@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
+import net.schwarzbaer.spring.questionary.models.resume.QuestionDefDTO;
 
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
@@ -20,7 +21,7 @@ import lombok.ToString;
     @JsonSubTypes.Type(value = QuestionGroupDef          .class, name = "GROUP"   ) 
 })
 @Setter @Getter @ToString
-public class QuestionDef
+public abstract class QuestionDef
 {
     private String id;
     private String text;
@@ -31,4 +32,12 @@ public class QuestionDef
     {
         this.selectionType = selectionType;
     }
+
+    protected void setAllValuesExceptConditions(QuestionDef other)
+    {
+        this.id   = other.id;
+        this.text = other.text;
+    }
+
+    public abstract QuestionDefDTO createDTOForResume();
 }
