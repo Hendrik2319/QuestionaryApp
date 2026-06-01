@@ -1,6 +1,6 @@
-import axios from "axios";
 import type { ChangeEvent } from "react";
 import { useState } from "react";
+import { BackendAPI } from "../BackendAPI";
 
 function UploadQuestionaryFile() {
     const [file, setFile] = useState<File | null>(null);
@@ -12,30 +12,18 @@ function UploadQuestionaryFile() {
     async function handleUpload() {
         if (!file) return;
 
-        const text = await file.text();
+        const text: string = await file.text();
 
-        axios.post(
-            "/api/setquestionary",
+        BackendAPI.uploadQuestionaryFile(
+            "UploadQuestionaryFile.handleUpload",
             text,
-            {
-                headers: {
-                    "Content-Type": "text/plain",
-                },
-            }
-        )
-            .then((/* response */) => {
+            (/* title: QuestionaryTitle */) => {
                 alert("Upload erfolgreich");
-            })
-            .catch((error) => {
-                const errorData = error?.response?.data;
-                const message   = errorData?.error;
-                const timestamp = errorData?.timestamp;
-                if (message || timestamp)
-                    console.error("ERROR[setting questionary file]", error, "\r\nCause:\r\n"+ message, "\r\n\r\nTimestamp:\r\n"+timestamp);
-                else
-                    console.error("ERROR[setting questionary file]", error);
+            },
+            (/* error */) => {
                 alert("Upload fehlgeschlagen (details in console)");
-            });
+            }
+        );
     };
 
     return (
