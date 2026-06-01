@@ -12,9 +12,9 @@ import net.schwarzbaer.spring.questionary.models.errors.WrongDefinitionStructure
 
 public class ConditionsGroup
 {
-    private final @NonNull ConditionsGroupDef conditionsGroupDef;
-    private final @NonNull AggregationType type;
-    private final @NonNull List<Condition> conditions;
+    @NonNull private final ConditionsGroupDef conditionsGroupDef;
+    @NonNull private final AggregationType type;
+    @NonNull private final List<Condition> conditions;
 
     ConditionsGroup(@NonNull ConditionsGroupDef conditionsGroupDef)
     {
@@ -45,5 +45,29 @@ public class ConditionsGroup
     boolean isEmpty()
     {
         return conditions.isEmpty();
+    }
+
+    public boolean isFulfilled()
+    {
+        if (conditions.isEmpty())
+            return true;
+
+        for (Condition condition : conditions)
+        {
+            if (condition.isFulfilled())
+            {
+                if (type==AggregationType.ONE) return true;
+            }
+            else
+            {
+                if (type==AggregationType.ALL) return false;
+            }
+        }
+        switch (type)
+        {
+            case ALL: return true;
+            case ONE: return false;
+            default: throw new IllegalStateException("ConditionsGroupDef.AggregationType has an unexpected enum value: %s".formatted(type));
+        }
     }
 }

@@ -18,8 +18,8 @@ import net.schwarzbaer.spring.questionary.models.GetPageRequestDTO;
 import net.schwarzbaer.spring.questionary.models.GetPageRequestDTO.Direction;
 import net.schwarzbaer.spring.questionary.models.GetPageResponseDTO;
 import net.schwarzbaer.spring.questionary.models.InitialValuesDTO;
+import net.schwarzbaer.spring.questionary.models.PolymorphicValue;
 import net.schwarzbaer.spring.questionary.models.QuestionaryTitle;
-import net.schwarzbaer.spring.questionary.models.answers.QuestionAnswerValue;
 import net.schwarzbaer.spring.questionary.models.answers.QuestionaryAnswers;
 import net.schwarzbaer.spring.questionary.models.answers.SetAnswerDTO;
 import net.schwarzbaer.spring.questionary.models.definitions.QuestionaryDef;
@@ -136,7 +136,7 @@ public class MainService
         @NonNull
         String questionId = setAnswerDTO.questionId();
         @NonNull
-        QuestionAnswerValue answerValue = setAnswerDTO.answerValue();
+        PolymorphicValue answerValue = setAnswerDTO.answerValue();
 
         Question<?> question = currentQuestionary.getQuestion(questionId);
         if (question==null)
@@ -145,10 +145,10 @@ public class MainService
         if (question instanceof QuestionGroup)
             throw new IllegalArgumentException("Given answer targets directly a question group (id:\"%s\")".formatted(question.id));
 
-        if (question.meetToAnswerValue(answerValue))
+        if (question.meetsToValue(answerValue))
             throw new IllegalArgumentException("Given answer value (%s) does'nt fit to question (id:\"%s\")".formatted(answerValue, question.id));
 
-        Set<QuestionAnswerValue> answerSet = questionaryAnswers.answers().computeIfAbsent(questionId, id->new HashSet<>());
+        Set<PolymorphicValue> answerSet = questionaryAnswers.answers().computeIfAbsent(questionId, id->new HashSet<>());
         switch (setAnswerDTO.changeType())
         {
         case UNSET:

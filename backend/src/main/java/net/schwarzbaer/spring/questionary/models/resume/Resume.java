@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import lombok.NonNull;
-import net.schwarzbaer.spring.questionary.models.answers.QuestionAnswerValue;
+import net.schwarzbaer.spring.questionary.models.PolymorphicValue;
 
 public record Resume(
     @NonNull List<QuestionDefDTO> questions,
@@ -13,7 +13,7 @@ public record Resume(
 {
     public record QuestionAnswers(
         @NonNull String questionId,
-        @NonNull Set<QuestionAnswerValue> answers
+        @NonNull Set<PolymorphicValue> answers
     )
     {}
 }

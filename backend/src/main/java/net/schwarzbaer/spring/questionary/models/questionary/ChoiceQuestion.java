@@ -5,9 +5,8 @@ import java.util.List;
 import java.util.Set;
 
 import lombok.NonNull;
-import net.schwarzbaer.spring.questionary.models.answers.QuestionAnswerValue;
+import net.schwarzbaer.spring.questionary.models.PolymorphicValue;
 import net.schwarzbaer.spring.questionary.models.definitions.ChoiceQuestionDef;
-import net.schwarzbaer.spring.questionary.models.definitions.ConditionValueDef;
 import net.schwarzbaer.spring.questionary.models.definitions.OptionDef;
 import net.schwarzbaer.spring.questionary.models.errors.WrongDefinitionStructureException;
 
@@ -58,18 +57,9 @@ public class ChoiceQuestion extends Question<ChoiceQuestionDef>
     }
 
     @Override
-    boolean meetToConditionValue(ConditionValueDef value)
+    public boolean meetsToValue(PolymorphicValue value)
     {
-        if (value instanceof ConditionValueDef.StringValueDef stringValueDef)
-            return isAnOptionValue(stringValueDef.value());
-        return false;
-    }
-    
-
-    @Override
-    public boolean meetToAnswerValue(QuestionAnswerValue value)
-    {
-        if (value instanceof QuestionAnswerValue.StringValue stringValue)
+        if (value instanceof PolymorphicValue.StringValue stringValue)
             return isAnOptionValue(stringValue.value());
         return false;
     }

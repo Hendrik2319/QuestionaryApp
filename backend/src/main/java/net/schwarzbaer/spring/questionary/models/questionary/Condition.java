@@ -45,10 +45,16 @@ public class Condition
                 .formatted(referredQuestionId, parentQuestion.id)
             );
         
-        if (!referredQuestion.meetToConditionValue(definition.value()))
+        if (!referredQuestion.meetsToValue(definition.value()))
     		throw new WrongDefinitionStructureException(
                 "A condition value in question (id:\"%s\") doesn't meet values of referred question (id:\"%s\")"
                 .formatted(parentQuestion.id, referredQuestionId)
             );
+    }
+
+    public boolean isFulfilled()
+    {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'isFulfilled'");
     }
 }

@@ -1,9 +1,8 @@
 package net.schwarzbaer.spring.questionary.models.questionary;
 
 import lombok.NonNull;
-import net.schwarzbaer.spring.questionary.models.answers.QuestionAnswerValue;
+import net.schwarzbaer.spring.questionary.models.PolymorphicValue;
 import net.schwarzbaer.spring.questionary.models.definitions.BoolQuestionDef;
-import net.schwarzbaer.spring.questionary.models.definitions.ConditionValueDef;
 
 public class BoolQuestion extends Question<BoolQuestionDef>
 {
@@ -13,14 +12,8 @@ public class BoolQuestion extends Question<BoolQuestionDef>
     }
 
     @Override
-    boolean meetToConditionValue(ConditionValueDef value)
+    public boolean meetsToValue(PolymorphicValue value)
     {
-        return value instanceof ConditionValueDef.BoolValueDef;
-    }
-
-    @Override
-    public boolean meetToAnswerValue(QuestionAnswerValue value)
-    {
-        return value instanceof QuestionAnswerValue.BoolValue;
+        return value instanceof PolymorphicValue.BoolValue;
     }
 }

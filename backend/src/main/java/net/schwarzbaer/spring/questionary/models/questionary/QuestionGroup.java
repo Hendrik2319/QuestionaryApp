@@ -6,8 +6,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import lombok.NonNull;
-import net.schwarzbaer.spring.questionary.models.answers.QuestionAnswerValue;
-import net.schwarzbaer.spring.questionary.models.definitions.ConditionValueDef;
+import net.schwarzbaer.spring.questionary.models.PolymorphicValue;
 import net.schwarzbaer.spring.questionary.models.definitions.QuestionDef;
 import net.schwarzbaer.spring.questionary.models.definitions.QuestionGroupDef;
 import net.schwarzbaer.spring.questionary.models.errors.WrongDefinitionStructureException;
@@ -76,14 +75,8 @@ public class QuestionGroup extends Question<QuestionGroupDef>
     }
 
     @Override
-    boolean meetToConditionValue(ConditionValueDef value)
+    public boolean meetsToValue(PolymorphicValue value)
     {
-        throw new IllegalStateException("No condition can't refer directly to a question group.");
-    }
-
-    @Override
-    public boolean meetToAnswerValue(QuestionAnswerValue value)
-    {
-        throw new IllegalStateException("No answer can't target directly to a question group.");
+        throw new IllegalStateException("A question group has no values.");
     }
 }

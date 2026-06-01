@@ -3,10 +3,9 @@ package net.schwarzbaer.spring.questionary.models.questionary;
 import java.util.function.Function;
 
 import lombok.NonNull;
-import net.schwarzbaer.spring.questionary.models.answers.QuestionAnswerValue;
+import net.schwarzbaer.spring.questionary.models.PolymorphicValue;
 import net.schwarzbaer.spring.questionary.models.definitions.BoolQuestionDef;
 import net.schwarzbaer.spring.questionary.models.definitions.ChoiceQuestionDef;
-import net.schwarzbaer.spring.questionary.models.definitions.ConditionValueDef;
 import net.schwarzbaer.spring.questionary.models.definitions.ConditionsGroupDef;
 import net.schwarzbaer.spring.questionary.models.definitions.QuestionDef;
 import net.schwarzbaer.spring.questionary.models.definitions.QuestionGroupDef;
@@ -72,8 +71,7 @@ public abstract class Question<DefinitionType extends QuestionDef>
             conditions.checkDefinitionStructure(this);
     }
 
-    abstract boolean meetToConditionValue(@NonNull ConditionValueDef value);
-    public abstract boolean meetToAnswerValue(@NonNull QuestionAnswerValue value);
+    public abstract boolean meetsToValue(@NonNull PolymorphicValue value);
 
     public SelectionType getSelectionType()
     {
@@ -87,7 +85,6 @@ public abstract class Question<DefinitionType extends QuestionDef>
 
     public boolean isActive()
     {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isActive'");
+        return conditions==null || conditions.isFulfilled();
     }
 }
