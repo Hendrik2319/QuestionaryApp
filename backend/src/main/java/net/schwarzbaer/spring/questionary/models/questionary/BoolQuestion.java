@@ -15,7 +15,7 @@ public class BoolQuestion extends Question<BoolQuestionDef>
     @Override
     public BoolPage createPage(boolean isFirst)
     {
-        return new BoolPage(id, text, isFirst);
+        return new BoolPage(id, getTexts(), isFirst);
     }
 
     @Override

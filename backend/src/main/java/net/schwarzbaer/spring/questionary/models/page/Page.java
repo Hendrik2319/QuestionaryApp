@@ -1,5 +1,7 @@
 package net.schwarzbaer.spring.questionary.models.page;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -24,6 +26,6 @@ public abstract class Page
     @NonNull
     private final String id;
     @NonNull
-    private final String text; // TODO: add text from parent question group
+    private final List<String> texts;
     private final boolean isFirst;
 }

@@ -1,5 +1,7 @@
 package net.schwarzbaer.spring.questionary.models.questionary;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 
 import lombok.NonNull;
@@ -89,5 +91,16 @@ public abstract class Question<DefinitionType extends QuestionDef>
     public boolean isActive(@NonNull QuestionaryAnswers questionaryAnswers)
     {
         return conditions==null || conditions.isFulfilled(questionaryAnswers);
+    }
+
+    protected List<String> getTexts()
+    {
+        List<String> texts =
+            parentGroup==null
+                ? new ArrayList<>()
+                : parentGroup.getTexts();
+        
+        texts.add(text);
+        return texts;
     }
 }

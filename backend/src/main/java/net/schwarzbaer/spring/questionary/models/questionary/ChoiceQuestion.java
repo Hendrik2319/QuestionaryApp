@@ -65,10 +65,12 @@ public class ChoiceQuestion extends Question<ChoiceQuestionDef>
         if (selectionType==null)
             throw new IllegalStateException("ChoiceQuestionDef.selectionType must not be NULL");
 
+        List<String> texts = getTexts();
+        List<OptionDef> options = definition.getOptions();
         switch (selectionType)
         {
-        case Multiple: return new ChoicePage.Multiple(id, text, isFirst, definition.getOptions());
-        case Single  : return new ChoicePage.Single  (id, text, isFirst, definition.getOptions());
+        case Multiple: return new ChoicePage.Multiple(id, texts, isFirst, options);
+        case Single  : return new ChoicePage.Single  (id, texts, isFirst, options);
         default: throw new IllegalStateException("SelectionType has an unexpected enum value: %s".formatted(selectionType));
         }
     }

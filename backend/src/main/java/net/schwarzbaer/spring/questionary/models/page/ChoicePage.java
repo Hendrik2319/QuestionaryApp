@@ -12,27 +12,27 @@ public abstract class ChoicePage extends Page
 {
     @NonNull private final List<OptionDef> options;
 
-    protected ChoicePage(@NonNull String id, @NonNull String text, boolean isFirst, @NonNull List<OptionDef> options)
+    protected ChoicePage(@NonNull String id, @NonNull List<String> texts, boolean isFirst, @NonNull List<OptionDef> options)
     {
-        super(id, text, isFirst);
+        super(id, texts, isFirst);
         this.options = options;
     }
 
     @ToString(callSuper=true)
     public static class Single extends ChoicePage
     {
-        public Single(@NonNull String id, @NonNull String text, boolean isFirst, @NonNull List<OptionDef> options)
+        public Single(@NonNull String id, @NonNull List<String> texts, boolean isFirst, @NonNull List<OptionDef> options)
         {
-            super(id, text, isFirst, options);
+            super(id, texts, isFirst, options);
         }
     }
 
     @ToString(callSuper=true)
     public static class Multiple extends ChoicePage
     {
-        public Multiple(@NonNull String id, @NonNull String text, boolean isFirst, @NonNull List<OptionDef> options)
+        public Multiple(@NonNull String id, @NonNull List<String> texts, boolean isFirst, @NonNull List<OptionDef> options)
         {
-            super(id, text, isFirst, options);
+            super(id, texts, isFirst, options);
         }
     }
 }
