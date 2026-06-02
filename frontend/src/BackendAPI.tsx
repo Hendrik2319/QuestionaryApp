@@ -10,7 +10,7 @@ export const BackendAPI = {
         onError?: (error: any)=>void
     ) =>
         processPromise(
-            axios.get( "/api/getinit" ),
+            axios.get( "/api/init" ),
             "fetchInitialData",
             "fetch initial data",
             callerLabel,
@@ -26,7 +26,7 @@ export const BackendAPI = {
     ) =>
         processPromise(
             axios.post(
-                "/api/setquestionary", fileContent,
+                "/api/questionary", fileContent,
                 { headers: { "Content-Type": "text/plain", }, }
             ),
             "uploadQuestionaryFile",
@@ -45,19 +45,21 @@ function processPromise<T>(
     handleResponseData: (responseData: T) => void,
     onError?: (error: any)=>void
 ) {
+    const callText = `${callerLabel} -> BackendAPI.${functionLabel}`;
+    console.debug(`[BackendAPI] ${callText} (${whenText})`);
     promise
         .then((response) => {
             if (response.status !== 200)
-                throw new Error("Get wrong response status, when " + whenText + ": " + response.status);
+                throw new Error(`Get wrong response status, when ${whenText}: ${response.status}`);
             handleResponseData(response.data);
         })
         .catch((error) => {
-            const label = "ERROR[ " + callerLabel + " -> BackendAPI." + functionLabel + " ]";
+            const label = `ERROR[ ${callText} ]`;
             const errorMessage = error?.response?.data;
             const message   = errorMessage?.error;
             const timestamp = errorMessage?.timestamp;
             if (message || timestamp)
-                console.error(label, error, "\r\nCause:\r\n"+ message, "\r\n\r\nTimestamp:\r\n"+timestamp);
+                console.error(label, error, message && `\r\nCause:\r\n${message}`, timestamp && `\r\n\r\nTimestamp:\r\n${timestamp}`);
             else
                 console.error(label, error);
             if (onError) onError( error );
