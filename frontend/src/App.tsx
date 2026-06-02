@@ -1,16 +1,25 @@
 import { useEffect, useState, type JSX } from 'react';
 import './App.css';
+import BackendAPI from './BackendAPI';
 import PageFooter from './components/PageFootert';
 import PageHeader from './components/PageHeader';
 import ShowMessage from './components/ShowMessage';
 import UploadQuestionaryFile from './components/UploadQuestionaryFile';
-import type { InitialValuesDTO } from './types/Types';
 import { generateRandomString } from './Debug';
-import BackendAPI from './BackendAPI';
+import QuestionPage from './pages/QuestionPage';
+import ResumePage from './pages/ResumePage';
+import type { GetPageResponseDTO, InitialValuesDTO } from './types/Types';
 
 type LoadingMsg = {
     message: string,
     isLoading: boolean,
+}
+
+type ButtonOptions = {
+    isPrevBtnDisabled?: boolean,
+    isNextBtnDisabled?: boolean,
+    prevBtnText?: string
+    nextBtnText?: string
 }
 
 export default function App(): JSX.Element
@@ -25,6 +34,9 @@ export default function App(): JSX.Element
     const [isNextBtnDisabled, setNextBtnDisabled] = useState<boolean>(true);
     const [prevBtnText      , setPrevBtnText    ] = useState<string>("<");
     const [nextBtnText      , setNextBtnText    ] = useState<string>(">");
+
+    const [pageData, setPageData] = useState<GetPageResponseDTO | null>(null);
+    
 
     useEffect(() => {
         if (!sessionId) {
@@ -70,7 +82,17 @@ export default function App(): JSX.Element
         // TODO
     }
 
-    function generatePage( content: JSX.Element ): JSX.Element
+    function setAndGetStateValue<T = boolean | string>( newValue: T | undefined, oldValue: T, setFunc: (val:T)=>void ): T
+    {
+        if (newValue!==undefined && newValue!==oldValue)
+        {
+            setFunc(newValue);
+            return newValue;
+        }
+        return oldValue;
+    }
+
+    function generatePage( content: JSX.Element, buttonOptions?: ButtonOptions ): JSX.Element
     {
         return (
             <>
@@ -78,10 +100,10 @@ export default function App(): JSX.Element
                 {generateDebugInfo()}
                 {content}
                 <PageFooter
-                    isPrevBtnDisabled={isPrevBtnDisabled}
-                    isNextBtnDisabled={isNextBtnDisabled}
-                    prevBtnText={prevBtnText}
-                    nextBtnText={nextBtnText}
+                    isPrevBtnDisabled={setAndGetStateValue( buttonOptions?.isPrevBtnDisabled, isPrevBtnDisabled, setPrevBtnDisabled )}
+                    isNextBtnDisabled={setAndGetStateValue( buttonOptions?.isNextBtnDisabled, isNextBtnDisabled, setNextBtnDisabled )}
+                    prevBtnText={setAndGetStateValue( buttonOptions?.prevBtnText, prevBtnText, setPrevBtnText )}
+                    nextBtnText={setAndGetStateValue( buttonOptions?.nextBtnText, nextBtnText, setNextBtnText )}
                     onClickPrevBtn={onClickPrevBtn}
                     onClickNextBtn={onClickNextBtn}
                 />
@@ -128,13 +150,47 @@ export default function App(): JSX.Element
     
     if (sessionId)
     {
-        BackendAPI.getNextPage(
-            "MainPage[TEST]",
-            sessionId, null, "NEXT",
-            responseDTO => {
-                console.debug("BackendAPI.getNextPage -> ", { responseDTO });
+        if (!pageData)
+        {
+            setLoadingMsg({ message:"Erste Frage wird geladen", isLoading: true });
+            BackendAPI.getNextPage(
+                "MainPage[Load first Page]",
+                sessionId, null, "NEXT",
+                responseDTO => {
+                    setLoadingMsg({ message:"", isLoading: false });
+                    setPageData(responseDTO);
+                    console.debug("BackendAPI.getNextPage -> ", { responseDTO });
+                }
+            );
+        }
+        else
+        {
+            switch (pageData.type)
+            {
+                case 'PAGE':
+                    return generatePage(
+                        (<QuestionPage
+                            page={pageData.page}
+                            page_data={pageData.page_data}
+                        />),
+                        {
+                            isPrevBtnDisabled: pageData.page.is_first,
+                            isNextBtnDisabled: false,
+                        }
+                    );
+
+                case 'RESUME':
+                    return generatePage(
+                        (<ResumePage
+                            questions={pageData.questions}
+                        />),
+                        {
+                            isPrevBtnDisabled: false,
+                            isNextBtnDisabled: true ,
+                        }
+                    );
             }
-        );
+        }
     }
     
     return generatePage(
