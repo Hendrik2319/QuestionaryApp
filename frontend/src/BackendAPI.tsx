@@ -2,7 +2,7 @@ import type { AxiosResponse } from "axios";
 import axios from "axios";
 import type { GetPageRequestDTO, GetPageResponseDTO, InitialValuesDTO, PageDirection, QuestionaryTitle } from "./types/Types";
 
-export const BackendAPI = {
+const BackendAPI = {
 
     fetchInitialData: (
         callerLabel: string,
@@ -84,3 +84,5 @@ function processPromise<T>(
             if (onError) onError( error );
         })
 }
+
+export default BackendAPI;

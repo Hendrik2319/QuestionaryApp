@@ -1,6 +1,6 @@
 import type { ChangeEvent, JSX } from "react";
 import { useState } from "react";
-import { BackendAPI } from "../BackendAPI";
+import BackendAPI from "../BackendAPI";
 import type { QuestionaryTitle } from "../types/Types";
 
 type Props = {
