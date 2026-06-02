@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import lombok.NonNull;
-import net.schwarzbaer.spring.questionary.models.GetPageRequestDTO.Direction;
+import net.schwarzbaer.spring.questionary.models.PageDirection;
 import net.schwarzbaer.spring.questionary.models.answers.QuestionaryAnswers;
 import net.schwarzbaer.spring.questionary.models.definitions.QuestionDef;
 import net.schwarzbaer.spring.questionary.models.definitions.QuestionaryDef;
@@ -85,32 +85,32 @@ public class Questionary
         return questions.get(questionId);
     }
 
-    public QuestionPage getPage(@NonNull String questionId)
+    public QuestionPageInfo getPage(@NonNull String questionId)
     {
         for (int i=0; i<questionPages.size(); i++)
         {
             Question<?> question = questionPages.get(i);
             if (questionId.equals(question.id))
-                return new QuestionPage(question, i);
+                return new QuestionPageInfo(question, i);
         }
         
         return null;
     }
 
-    public QuestionPage getFirstPage()
+    public QuestionPageInfo getFirstPage()
     {
         if (questionPages.isEmpty())
             return null;
 
-        return new QuestionPage(questionPages.getFirst(), 0, true);
+        return new QuestionPageInfo(questionPages.getFirst(), 0, true);
     }
 
-    public QuestionPage getLastPage(@NonNull QuestionaryAnswers questionaryAnswers)
+    public QuestionPageInfo getLastPage(@NonNull QuestionaryAnswers questionaryAnswers)
     {
-        return getNextPage(questionPages.size(), Direction.PREV, questionaryAnswers);
+        return getNextPage(questionPages.size(), PageDirection.PREV, questionaryAnswers);
     }
 
-    public QuestionPage getNextPage(int pageIndex, @NonNull Direction direction, @NonNull QuestionaryAnswers questionaryAnswers)
+    public QuestionPageInfo getNextPage(int pageIndex, @NonNull PageDirection direction, @NonNull QuestionaryAnswers questionaryAnswers)
     {
         switch (direction)
         {
@@ -120,7 +120,7 @@ public class Questionary
             {
                 Question<?> question = questionPages.get(i);
                 if (question.isActive(questionaryAnswers))
-                    return new QuestionPage(question, i);
+                    return new QuestionPageInfo(question, i);
             }
             break;
 
@@ -130,7 +130,7 @@ public class Questionary
             {
                 Question<?> question = questionPages.get(i);
                 if (question.isActive(questionaryAnswers))
-                    return new QuestionPage(question, i);
+                    return new QuestionPageInfo(question, i);
             }
             break;
         }

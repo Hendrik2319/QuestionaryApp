@@ -4,7 +4,6 @@ import lombok.NonNull;
 import net.schwarzbaer.spring.questionary.models.PolymorphicValue;
 
 public record SetAnswerDTO (
-    @NonNull String sessionId,
     @NonNull String questionId,
     @NonNull ChangeType changeType,
     @NonNull PolymorphicValue answerValue

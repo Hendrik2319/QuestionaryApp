@@ -15,9 +15,9 @@ import org.springframework.stereotype.Service;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import net.schwarzbaer.spring.questionary.models.GetPageRequestDTO;
-import net.schwarzbaer.spring.questionary.models.GetPageRequestDTO.Direction;
 import net.schwarzbaer.spring.questionary.models.GetPageResponseDTO;
 import net.schwarzbaer.spring.questionary.models.InitialValuesDTO;
+import net.schwarzbaer.spring.questionary.models.PageDirection;
 import net.schwarzbaer.spring.questionary.models.PolymorphicValue;
 import net.schwarzbaer.spring.questionary.models.QuestionaryTitle;
 import net.schwarzbaer.spring.questionary.models.answers.QuestionaryAnswers;
@@ -27,7 +27,7 @@ import net.schwarzbaer.spring.questionary.models.definitions.SelectionType;
 import net.schwarzbaer.spring.questionary.models.errors.WrongDefinitionStructureException;
 import net.schwarzbaer.spring.questionary.models.questionary.Question;
 import net.schwarzbaer.spring.questionary.models.questionary.QuestionGroup;
-import net.schwarzbaer.spring.questionary.models.questionary.QuestionPage;
+import net.schwarzbaer.spring.questionary.models.questionary.QuestionPageInfo;
 import net.schwarzbaer.spring.questionary.models.questionary.Questionary;
 import net.schwarzbaer.spring.questionary.models.resume.QuestionResumeDTO;
 import tools.jackson.databind.ObjectMapper;
@@ -49,18 +49,16 @@ public class MainService
         return new QuestionaryTitle(currentQuestionary.title);
     }
 
-    public GetPageResponseDTO getPage(@NonNull GetPageRequestDTO getPageRequestDTO) throws NoSuchElementException
+    public GetPageResponseDTO getPage(@NonNull String sessionId, @NonNull PageDirection direction, @NonNull GetPageRequestDTO requestDTO) throws NoSuchElementException
     {
         if (currentQuestionary==null)
             throw new NoSuchElementException("No questionary uploaded");
 
-        String currentQuestionId = getPageRequestDTO.questionId();
+        String currentQuestionId = requestDTO.questionId();
         @NonNull
-        Direction direction = getPageRequestDTO.direction();
-        @NonNull
-        QuestionaryAnswers questionaryAnswers = getQuestionaryAnswers(getPageRequestDTO.sessionId());
+        QuestionaryAnswers questionaryAnswers = getQuestionaryAnswers(sessionId);
 
-        QuestionPage currentPage, nextPage;
+        QuestionPageInfo currentPage, nextPage;
         if (currentQuestionId==null)
         {
             currentPage = null;
@@ -127,17 +125,17 @@ public class MainService
         );
     }
 
-    public void setAnswer(@NonNull SetAnswerDTO setAnswerDTO) throws NoSuchElementException, IllegalArgumentException
+    public void setAnswer(@NonNull String sessionId, @NonNull SetAnswerDTO requestDTO) throws NoSuchElementException, IllegalArgumentException
     {
         if (currentQuestionary==null)
             throw new NoSuchElementException("No questionary uploaded");
 
         @NonNull
-        QuestionaryAnswers questionaryAnswers = getQuestionaryAnswers(setAnswerDTO.sessionId());
+        QuestionaryAnswers questionaryAnswers = getQuestionaryAnswers(sessionId);
         @NonNull
-        String questionId = setAnswerDTO.questionId();
+        String questionId = requestDTO.questionId();
         @NonNull
-        PolymorphicValue answerValue = setAnswerDTO.answerValue();
+        PolymorphicValue answerValue = requestDTO.answerValue();
 
         Question<?> question = currentQuestionary.getQuestion(questionId);
         if (question==null)
@@ -150,7 +148,7 @@ public class MainService
             throw new IllegalArgumentException("Given answer value (%s) does'nt fit to question (id:\"%s\")".formatted(answerValue, question.id));
 
         Set<PolymorphicValue> answerSet = questionaryAnswers.answers().computeIfAbsent(questionId, id->new HashSet<>());
-        switch (setAnswerDTO.changeType())
+        switch (requestDTO.changeType())
         {
         case UNSET:
             answerSet.remove(answerValue);

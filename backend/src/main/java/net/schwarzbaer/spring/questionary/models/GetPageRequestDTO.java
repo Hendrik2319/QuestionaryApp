@@ -1,12 +1,7 @@
 package net.schwarzbaer.spring.questionary.models;
 
-import lombok.NonNull;
-
 public record GetPageRequestDTO(
-    @NonNull String sessionId,
-    String questionId, // no questionId means: get first page/question
-    @NonNull Direction direction
+    String questionId // no questionId means: get first/last page/question
 )
 {
-    public enum Direction { PREV, NEXT }
 }
