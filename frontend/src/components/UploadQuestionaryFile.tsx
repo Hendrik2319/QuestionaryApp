@@ -1,13 +1,15 @@
 import type { ChangeEvent, JSX } from "react";
 import { useState } from "react";
 import { BackendAPI } from "../BackendAPI";
-import type { QuestionaryTitle } from "../Types";
+import type { LoadingMsg, QuestionaryTitle } from "../Types";
 
 type Props = {
     changeTitle: (title: string) => void,
+    setLoading?: (isLoading: boolean) => void,
+    setLoadingMsg?: (msg: LoadingMsg) => void,
 }
 
-function UploadQuestionaryFile( { changeTitle }: Readonly<Props> ): JSX.Element {
+function UploadQuestionaryFile( { changeTitle, setLoading, setLoadingMsg }: Readonly<Props> ): JSX.Element {
     const [file, setFile] = useState<File | null>(null);
 
     function handleFileChange(e: ChangeEvent<HTMLInputElement>) {
@@ -19,14 +21,21 @@ function UploadQuestionaryFile( { changeTitle }: Readonly<Props> ): JSX.Element 
 
         const text: string = await file.text();
 
+        if (setLoading   ) setLoading   (true);
+        if (setLoadingMsg) setLoadingMsg({ message: "Upload Questionary", isLoading: true });
+
         BackendAPI.uploadQuestionaryFile(
             "UploadQuestionaryFile.handleUpload",
             text,
             (data: QuestionaryTitle) => {
-                alert("Upload erfolgreich");
+                if (setLoading   ) setLoading   (false);
+                if (setLoadingMsg) setLoadingMsg({ message:"", isLoading:false })
                 changeTitle( data.title );
+                alert("Upload erfolgreich");
             },
             (/* error */) => {
+                if (setLoading   ) setLoading   (false);
+                if (setLoadingMsg) setLoadingMsg({ message:"", isLoading:false })
                 alert("Upload fehlgeschlagen (details in console)");
             }
         );
