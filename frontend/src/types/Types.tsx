@@ -19,7 +19,7 @@ export type GetPageResponseDTO =
 | {
     type: "PAGE",
     page: Page,
-    pageData: PolymorphicValue[],
+    page_data: PolymorphicValue[],
 }
 | {
     type: "RESUME",

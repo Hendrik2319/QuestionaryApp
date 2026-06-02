@@ -21,7 +21,7 @@ type LoadingMsg = {
 
 export default function MainPage( props: Readonly<Props>): JSX.Element
 {
-    const [sessionId , setSessionId ] = useState<null|String>(null);
+    const [sessionId , setSessionId ] = useState<null|string>(null);
     const [needQuest , setNeedQuest ] = useState<boolean>(false);
     const [loadingMsg, setLoadingMsg] = useState<LoadingMsg>({ message: "Load Initial Values", isLoading: true });
     const [message   , setMessage   ] = useState<null|string>(null);
@@ -105,11 +105,21 @@ export default function MainPage( props: Readonly<Props>): JSX.Element
                 />
             </>
         );
-
+    
+    if (sessionId)
+    {
+        BackendAPI.getNextPage(
+            "MainPage[TEST]",
+            sessionId, null, "NEXT",
+            responseDTO => {
+                console.debug("BackendAPI.getNextPage -> ", { responseDTO });
+            }
+        );
+    }
+    
     return (
         <>
             {generateDebugInfo()}
-            <span>Dummy Text</span>
         </>
     );
 }
