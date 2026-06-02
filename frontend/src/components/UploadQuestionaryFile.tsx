@@ -1,15 +1,20 @@
 import type { ChangeEvent, JSX } from "react";
 import { useState } from "react";
 import { BackendAPI } from "../BackendAPI";
-import type { LoadingMsg, QuestionaryTitle } from "../types/Types";
+import type { QuestionaryTitle } from "../types/Types";
 
 type Props = {
-    changeTitle: (title: string) => void,
-    setLoading?: (isLoading: boolean) => void,
-    setLoadingMsg?: (msg: LoadingMsg) => void,
-}
+    text: string,
+    notifyLoading: (isLoading: boolean) => void,
+    setResult: (result: Result) => void,
+};
 
-function UploadQuestionaryFile( { changeTitle, setLoading, setLoadingMsg }: Readonly<Props> ): JSX.Element
+export type Result = {
+    success: boolean,
+    questionaryTitle?: string,
+};
+
+export default function UploadQuestionaryFile( { text, setResult, notifyLoading }: Readonly<Props> ): JSX.Element
 {
     const [file, setFile] = useState<File | null>(null);
 
@@ -22,33 +27,31 @@ function UploadQuestionaryFile( { changeTitle, setLoading, setLoadingMsg }: Read
 
         const text: string = await file.text();
 
-        if (setLoading   ) setLoading   (true);
-        if (setLoadingMsg) setLoadingMsg({ message: "Upload Questionary", isLoading: true });
+        notifyLoading(true);
 
         BackendAPI.uploadQuestionaryFile(
             "UploadQuestionaryFile.handleUpload",
             text,
             (data: QuestionaryTitle) => {
-                if (setLoading   ) setLoading   (false);
-                if (setLoadingMsg) setLoadingMsg({ message:"", isLoading:false })
-                changeTitle( data.title );
-                alert("Upload erfolgreich");
+                notifyLoading(false);
+                setResult({
+                    questionaryTitle: data.title,
+                    success: true,
+                });
             },
             (/* error */) => {
-                if (setLoading   ) setLoading   (false);
-                if (setLoadingMsg) setLoadingMsg({ message:"", isLoading:false })
-                alert("Upload fehlgeschlagen (details in console)");
+                notifyLoading(false);
+                setResult({ success: false });
             }
         );
     };
 
     return (
         <div>
-            Select Questionary File:<br/>
+            {text}<br/>
             <input type="file" accept="application/json" onChange={handleFileChange} />
-            <button onClick={handleUpload}>Upload</button>
+            &nbsp;&nbsp;
+            <button onClick={handleUpload}>Hochladen</button>
         </div>
     );
 };
-
-export default UploadQuestionaryFile;

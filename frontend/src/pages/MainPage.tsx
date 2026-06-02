@@ -2,6 +2,8 @@ import { useEffect, useState, type JSX } from "react";
 import type { InitialValuesDTO, LoadingMsg } from "../types/Types";
 import { BackendAPI } from "../BackendAPI";
 import UploadQuestionaryFile from "../components/UploadQuestionaryFile";
+import { generateRandomString } from "../Debug";
+import ShowMessage from "../components/ShowMessage";
 
 type Props = {
     setTitle: (title: string) => void,
@@ -11,12 +13,12 @@ type Props = {
     setNextBtnText: (text: string) => void,
 }
 
-function MainPage( props: Readonly<Props>): JSX.Element
+export default function MainPage( props: Readonly<Props>): JSX.Element
 {
-    const [sessionId , setSessionId ] = useState<null | String>(null);
+    const [sessionId , setSessionId ] = useState<null|String>(null);
     const [needQuest , setNeedQuest ] = useState<boolean>(false);
-    // const [loading   , setLoading   ] = useState<boolean>(true);
     const [loadingMsg, setLoadingMsg] = useState<LoadingMsg>({ message: "Load Initial Values", isLoading: true });
+    const [message   , setMessage   ] = useState<null|string>(null);
 
     useEffect(() => {
         if (!sessionId) {
@@ -25,19 +27,12 @@ function MainPage( props: Readonly<Props>): JSX.Element
                 (data: InitialValuesDTO) => {
                     setSessionId(data.session_id);
                     setNeedQuest(data.need_questionary);
-                    props.setTitle(data.title || "????");
-                    setLoadingMsg({
-                        message: "",
-                        isLoading: false,
-                    });
-                    // setLoading(false);
+                    if (data.title)
+                        props.setTitle(data.title);
+                    setLoadingMsg({ message: "", isLoading: false });
                 },
                 (/* error */) => {
-                    setLoadingMsg({
-                        message: "",
-                        isLoading: false,
-                    });
-                    // setLoading(false);
+                    setLoadingMsg({ message: "", isLoading: false });
                 }
             );
         }
@@ -48,7 +43,7 @@ function MainPage( props: Readonly<Props>): JSX.Element
         return (
             <>
                 <span>
-                    [{Math.random()}]<br/>
+                    [{generateRandomString(7)}]<br/>
                     sessionId:"{sessionId}"<br/>
                     needQuest:{needQuest?"true":"false"}<br/>
                     {/* loading:{loading?"true":"false"}<br/> */}
@@ -61,11 +56,17 @@ function MainPage( props: Readonly<Props>): JSX.Element
 
     // console.debug({ loadingMsg });
 
-    // if (loading)
-    // {
-    //     return <div>Lade Session...</div>;
-    //     //page = (<div>Loading ...</div>);
-    // }
+    if (message)
+        return (
+            <>
+                {generateDebugInfo()}
+                <ShowMessage
+                    message={message}
+                    onBtnClick={()=>setMessage(null)}
+                />
+            </>
+        );
+
     if (loadingMsg.isLoading)
         return (
             <>
@@ -79,8 +80,24 @@ function MainPage( props: Readonly<Props>): JSX.Element
             <>
                 {generateDebugInfo()}
                 <UploadQuestionaryFile
-                    changeTitle={(title)=>{ props.setTitle(title); setNeedQuest(false); }}
-                    setLoadingMsg={(msg)=>{ setLoadingMsg(msg); console.debug('UploadQuestionaryFile', { loadingMsg: msg }) }}
+                    text={"Bitte wählen Sie eine Fragebogen-Datei aus und klicken Sie auf \"Hochladen\":"}
+                    notifyLoading={isLoading => {
+                        if (isLoading)
+                            setLoadingMsg({ message:"Fragebogen wird hochgeladen", isLoading: true });
+                    }}
+                    setResult={result => {
+                        setLoadingMsg({ message:"", isLoading:false });
+
+                        if (result.questionaryTitle)
+                            props.setTitle(result.questionaryTitle);
+
+                        if (result.success)
+                            setMessage("Hochladen war erfolgreich");
+                        else
+                            setMessage("Hochladen ist fehlgeschlagen (Details in Console)");
+
+                        setNeedQuest(!result.success);
+                    }}
                 />
             </>
         );
@@ -92,5 +109,3 @@ function MainPage( props: Readonly<Props>): JSX.Element
         </>
     );
 }
-
-export default MainPage

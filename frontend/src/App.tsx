@@ -4,7 +4,7 @@ import MainPage from './pages/MainPage';
 
 function App(): JSX.Element
 {
-    const [title            , setTitle          ] = useState<string>("<no questionary loaded>");
+    const [title            , setTitle          ] = useState<string>("<nichts geladen>");
     const [isPrevBtnDisabled, setPrevBtnDisabled] = useState<boolean>(true);
     const [isNextBtnDisabled, setNextBtnDisabled] = useState<boolean>(true);
     const [prevBtnText      , setPrevBtnText    ] = useState<string>("<");
@@ -22,7 +22,7 @@ function App(): JSX.Element
 
     return (
         <>
-            <h1 className={"PageTitle"}>Questionary: {title}</h1>
+            <h1 className={"PageTitle"}>Fragebogen: {title}</h1>
             <hr/>
             <MainPage
                 setTitle={setTitle}
