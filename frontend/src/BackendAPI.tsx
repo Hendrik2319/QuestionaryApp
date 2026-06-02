@@ -1,6 +1,6 @@
 import type { AxiosResponse } from "axios";
 import axios from "axios";
-import type { InitialValuesDTO, QuestionaryTitle } from "./types/Types";
+import type { GetPageRequestDTO, GetPageResponseDTO, InitialValuesDTO, PageDirection, QuestionaryTitle } from "./types/Types";
 
 export const BackendAPI = {
 
@@ -35,6 +35,25 @@ export const BackendAPI = {
             handleResponseData,
             onError
         ),
+    
+    getNextPage: (
+        callerLabel: string,
+        sessionId: string,
+        questionId: string | null,
+        direction: PageDirection,
+        handleResponseData: (response: GetPageResponseDTO) => void,
+        onError?: (error: any)=>void
+    ) => {
+        const requestDTO: GetPageRequestDTO =  questionId ? { question_id: questionId } : {};
+        processPromise(
+            axios.post( `/api/${sessionId}/page/${direction}`, requestDTO ),
+            "getNextPage",
+            "gtting next page",
+            callerLabel,
+            handleResponseData,
+            onError
+        )
+    },
 };
 
 function processPromise<T>(

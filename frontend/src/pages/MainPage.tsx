@@ -1,9 +1,10 @@
 import { useEffect, useState, type JSX } from "react";
-import type { InitialValuesDTO, LoadingMsg } from "../types/Types";
 import { BackendAPI } from "../BackendAPI";
+import ShowMessage from "../components/ShowMessage";
 import UploadQuestionaryFile from "../components/UploadQuestionaryFile";
 import { generateRandomString } from "../Debug";
-import ShowMessage from "../components/ShowMessage";
+import type { InitialValuesDTO } from "../types/Types";
+import './MainPage.css';
 
 type Props = {
     setTitle: (title: string) => void,
@@ -11,6 +12,11 @@ type Props = {
     setNextBtnDisabled: (disabled: boolean) => void,
     setPrevBtnText: (text: string) => void,
     setNextBtnText: (text: string) => void,
+}
+
+type LoadingMsg = {
+    message: string,
+    isLoading: boolean,
 }
 
 export default function MainPage( props: Readonly<Props>): JSX.Element
@@ -23,7 +29,7 @@ export default function MainPage( props: Readonly<Props>): JSX.Element
     useEffect(() => {
         if (!sessionId) {
             BackendAPI.fetchInitialData(
-                "App.useEffect",
+                "MainPage.useEffect",
                 (data: InitialValuesDTO) => {
                     setSessionId(data.session_id);
                     setNeedQuest(data.need_questionary);
@@ -42,19 +48,17 @@ export default function MainPage( props: Readonly<Props>): JSX.Element
     {
         return (
             <>
-                <span>
+                <span className={"DebugInfo"}>
                     [{generateRandomString(7)}]<br/>
-                    sessionId:"{sessionId}"<br/>
-                    needQuest:{needQuest?"true":"false"}<br/>
-                    {/* loading:{loading?"true":"false"}<br/> */}
-                    loadingMsg:{loadingMsg.isLoading?"true":"false"}/"{loadingMsg.message}"<br/>
+                    SessionId: "{sessionId}"<br/>
+                    Need Quest: {needQuest?"true":"false"}<br/>
+                    Loading Msg: {loadingMsg.isLoading?"true":"false"} / "{loadingMsg.message}"<br/>
+                    Message: {message==null ? "<null>" : `\"${message}\"`}<br/>
                 </span>
                 <br/>
             </>
         );
     }
-
-    // console.debug({ loadingMsg });
 
     if (message)
         return (
