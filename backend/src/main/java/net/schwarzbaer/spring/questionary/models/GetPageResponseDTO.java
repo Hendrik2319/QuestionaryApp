@@ -21,7 +21,7 @@ import net.schwarzbaer.spring.questionary.models.resume.QuestionResumeDTO;
 })
 public interface GetPageResponseDTO
 {
-    public record PageDTO(@NonNull Page page, @NonNull Set<PolymorphicValue> pageData) implements GetPageResponseDTO
+    public record PageDTO(@NonNull Page page, @NonNull Set<PolymorphicValue> answers) implements GetPageResponseDTO
     {}
 
     public record ResumeDTO(@NonNull List<QuestionResumeDTO> questions) implements GetPageResponseDTO

@@ -7,12 +7,12 @@ import MultipleChoiceInput from "../components/MultipleChoiceInput";
 
 type Props = {
     page: Page,
-    page_data: PolymorphicValue[],
+    answers: PolymorphicValue[],
 }
 
 function createInputComponent(
     page: Page,
-    page_data: PolymorphicValue[]
+    answers: PolymorphicValue[]
 ): JSX.Element
 {
     switch (page.type)
@@ -21,7 +21,7 @@ function createInputComponent(
             return (
                 <BoolInput
                     questionId={page.id}
-                    page_data={page_data}
+                    answers={answers}
                 />
             );
 
@@ -31,7 +31,7 @@ function createInputComponent(
                 <SingleChoiceInput
                     questionId={page.id}
                     options={page.options}
-                    page_data={page_data}
+                    answers={answers}
                 />
             );
 
@@ -40,13 +40,13 @@ function createInputComponent(
                 <MultipleChoiceInput
                     questionId={page.id}
                     options={page.options}
-                    page_data={page_data}
+                    answers={answers}
                 />
             );
     }
 }
 
-export default function QuestionPage( { page, page_data }: Readonly<Props>): JSX.Element
+export default function QuestionPage( { page, answers }: Readonly<Props>): JSX.Element
 {
     const texts: string[] = page.texts;
     let textRows: JSX.Element = (<></>);
@@ -61,7 +61,7 @@ export default function QuestionPage( { page, page_data }: Readonly<Props>): JSX
     return (
         <>
             {textRows}
-            {createInputComponent(page, page_data)}
+            {createInputComponent(page, answers)}
         </>
     );
 }

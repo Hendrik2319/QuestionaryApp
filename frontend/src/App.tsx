@@ -195,7 +195,7 @@ export default function App(): JSX.Element
                     return generatePage(
                         (<QuestionPage
                             page={pageData.page}
-                            page_data={pageData.page_data}
+                            answers={pageData.answers}
                         />),
                         {
                             isPrevBtnDisabled: pageData.page.first_page,

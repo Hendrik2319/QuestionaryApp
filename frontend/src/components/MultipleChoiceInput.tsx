@@ -5,7 +5,7 @@ import type { OptionDef } from "../types/DefinitionsTypes";
 type Props = {
     questionId: string,
     options: OptionDef[],
-    page_data: PolymorphicValue[],
+    answers: PolymorphicValue[],
 }
 
 export default function MultipleChoiceInput( _props: Readonly<Props>): JSX.Element

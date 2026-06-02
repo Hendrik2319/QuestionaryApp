@@ -3,7 +3,7 @@ import type { PolymorphicValue } from "../types/Types";
 
 type Props = {
     questionId: string,
-    page_data: PolymorphicValue[],
+    answers: PolymorphicValue[],
 }
 
 export default function BoolInput( _props: Readonly<Props>): JSX.Element
