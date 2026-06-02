@@ -1,74 +1,41 @@
-import { useEffect, useState, type JSX } from 'react';
+import { useState, type JSX } from 'react';
 import './App.css';
-import { BackendAPI } from './BackendAPI';
-import UploadQuestionaryFile from './components/UploadQuestionaryFile';
-import type { InitialValuesDTO, LoadingMsg } from './Types';
+import MainPage from './pages/MainPage';
 
-function App()
+function App(): JSX.Element
 {
-    const [sessionId , setSessionId ] = useState<null | String>(null);
-    const [title     , setTitle     ] = useState<String>("????");
-    const [needQuest , setNeedQuest ] = useState<boolean>(false);
-    // const [loading   , setLoading   ] = useState<boolean>(true);
-    const [loadingMsg, setLoadingMsg] = useState<LoadingMsg>({ message: "Load Initial Values", isLoading: true });
+    const [title            , setTitle          ] = useState<string>("<no questionary loaded>");
+    const [isPrevBtnDisabled, setPrevBtnDisabled] = useState<boolean>(true);
+    const [isNextBtnDisabled, setNextBtnDisabled] = useState<boolean>(true);
+    const [prevBtnText      , setPrevBtnText    ] = useState<string>("<");
+    const [nextBtnText      , setNextBtnText    ] = useState<string>(">");
 
-    useEffect(() => {
-        if (!sessionId) {
-            BackendAPI.fetchInitialData(
-                "App.useEffect",
-                (data: InitialValuesDTO) => {
-                    setSessionId(data.session_id);
-                    setNeedQuest(data.need_questionary);
-                    setTitle(data.title || "????");
-                    setLoadingMsg({
-                        message: "",
-                        isLoading: false,
-                    });
-                    // setLoading(false);
-                },
-                (/* error */) => {
-                    setLoadingMsg({
-                        message: "",
-                        isLoading: false,
-                    });
-                    // setLoading(false);
-                }
-            );
-        }
-    }, []);
-
-    let page: JSX.Element = (<span>Dummy Text</span>);
-    // console.debug({ loadingMsg });
-
-    // if (loading)
-    // {
-    //     return <div>Lade Session...</div>;
-    //     //page = (<div>Loading ...</div>);
-    // }
-    if (loadingMsg.isLoading)
+    function onClickPrevBtn()
     {
-        page = (<div>{loadingMsg.message} ...</div>);
-        return page;
+        // TODO
     }
-    else if (needQuest)
+
+    function onClickNextBtn()
     {
-        page = (<UploadQuestionaryFile
-            changeTitle={(title)=>{ setTitle(title); setNeedQuest(false); }}
-            setLoadingMsg={(msg)=>{ setLoadingMsg(msg); console.debug('UploadQuestionaryFile', { loadingMsg: msg }) }}
-        />);
+        // TODO
     }
 
     return (
         <>
-            <h1>Questionary: {title ? title : "?????"}</h1>
-            <span>
-                [{Math.random()}]<br/>
-                sessionId:"{sessionId}"<br/>
-                needQuest:{needQuest?"true":"false"}<br/>
-                {/* loading:{loading?"true":"false"}<br/> */}
-                loadingMsg:{loadingMsg.isLoading?"true":"false"}/"{loadingMsg.message}"<br/>
-            </span><br/>
-            {page}
+            <h1 className={"PageTitle"}>Questionary: {title}</h1>
+            <hr/>
+            <MainPage
+                setTitle={setTitle}
+                setPrevBtnDisabled={setPrevBtnDisabled}
+                setNextBtnDisabled={setNextBtnDisabled}
+                setPrevBtnText={setPrevBtnText}
+                setNextBtnText={setNextBtnText}                
+            />
+            <hr/>
+            <div>
+                <button className={"PageButton"} onClick={onClickPrevBtn} disabled={isPrevBtnDisabled}>{prevBtnText}</button>
+                <button className={"PageButton"} onClick={onClickNextBtn} disabled={isNextBtnDisabled}>{nextBtnText}</button>
+            </div>
         </>
     )
 }

@@ -1,7 +1,7 @@
 import type { ChangeEvent, JSX } from "react";
 import { useState } from "react";
 import { BackendAPI } from "../BackendAPI";
-import type { LoadingMsg, QuestionaryTitle } from "../Types";
+import type { LoadingMsg, QuestionaryTitle } from "../types/Types";
 
 type Props = {
     changeTitle: (title: string) => void,
@@ -9,7 +9,8 @@ type Props = {
     setLoadingMsg?: (msg: LoadingMsg) => void,
 }
 
-function UploadQuestionaryFile( { changeTitle, setLoading, setLoadingMsg }: Readonly<Props> ): JSX.Element {
+function UploadQuestionaryFile( { changeTitle, setLoading, setLoadingMsg }: Readonly<Props> ): JSX.Element
+{
     const [file, setFile] = useState<File | null>(null);
 
     function handleFileChange(e: ChangeEvent<HTMLInputElement>) {

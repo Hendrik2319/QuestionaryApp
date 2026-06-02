@@ -1,6 +1,6 @@
 import type { AxiosResponse } from "axios";
 import axios from "axios";
-import type { InitialValuesDTO, QuestionaryTitle } from "./Types";
+import type { InitialValuesDTO, QuestionaryTitle } from "./types/Types";
 
 export const BackendAPI = {
 
