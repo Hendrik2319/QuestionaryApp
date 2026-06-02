@@ -6,11 +6,13 @@ import SingleChoiceInput from "../components/SingleChoiceInput";
 import MultipleChoiceInput from "../components/MultipleChoiceInput";
 
 type Props = {
+    sessionId: string,
     page: Page,
     answers: PolymorphicValue[],
 }
 
 function createInputComponent(
+    sessionId: string,
     page: Page,
     answers: PolymorphicValue[]
 ): JSX.Element
@@ -20,6 +22,7 @@ function createInputComponent(
         case "BOOL":
             return (
                 <BoolInput
+                    sessionId={sessionId}
                     questionId={page.id}
                     answers={answers}
                 />
@@ -29,6 +32,7 @@ function createInputComponent(
             
             return (
                 <SingleChoiceInput
+                    sessionId={sessionId}
                     questionId={page.id}
                     options={page.options}
                     answers={answers}
@@ -38,6 +42,7 @@ function createInputComponent(
         case "MULTIPLE":
             return (
                 <MultipleChoiceInput
+                    sessionId={sessionId}
                     questionId={page.id}
                     options={page.options}
                     answers={answers}
@@ -46,7 +51,7 @@ function createInputComponent(
     }
 }
 
-export default function QuestionPage( { page, answers }: Readonly<Props>): JSX.Element
+export default function QuestionPage( { sessionId, page, answers }: Readonly<Props>): JSX.Element
 {
     const texts: string[] = page.texts;
     let textRows: JSX.Element = (<></>);
@@ -61,7 +66,7 @@ export default function QuestionPage( { page, answers }: Readonly<Props>): JSX.E
     return (
         <>
             {textRows}
-            {createInputComponent(page, answers)}
+            {createInputComponent( sessionId, page, answers )}
         </>
     );
 }

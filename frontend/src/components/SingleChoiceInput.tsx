@@ -3,6 +3,7 @@ import type { PolymorphicValue } from "../types/Types";
 import type { OptionDef } from "../types/DefinitionsTypes";
 
 type Props = {
+    sessionId: string,
     questionId: string,
     options: OptionDef[],
     answers: PolymorphicValue[],

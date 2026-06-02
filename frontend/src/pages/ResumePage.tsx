@@ -2,6 +2,7 @@ import type { JSX } from "react";
 import type { QuestionResumeDTO } from "../types/ResumeTypes";
 
 type Props = {
+    sessionId: string,
     questions: QuestionResumeDTO[],
 }
 

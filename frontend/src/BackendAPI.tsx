@@ -1,6 +1,7 @@
 import type { AxiosResponse } from "axios";
 import axios from "axios";
-import type { GetPageRequestDTO, GetPageResponseDTO, InitialValuesDTO, PageDirection, QuestionaryTitle } from "./types/Types";
+import type { GetPageRequestDTO, GetPageResponseDTO, InitialValuesDTO, PageDirection, PolymorphicValue, QuestionaryTitle } from "./types/Types";
+import type { ChangeType, SetAnswerDTO } from "./types/AnswerTypes";
 
 const BackendAPI = {
 
@@ -48,9 +49,29 @@ const BackendAPI = {
         processPromise(
             axios.post( `/api/${sessionId}/page/${direction}`, requestDTO ),
             "getNextPage",
-            "gtting next page",
+            "getting next page",
             callerLabel,
             handleResponseData,
+            onError
+        )
+    },
+    
+    sendAnswer: (
+        callerLabel: string,
+        sessionId: string,
+        question_id: string,
+        change_type: ChangeType,
+        answer_value: PolymorphicValue,
+        handleResponseData?: () => void,
+        onError?: (error: any)=>void
+    ) => {
+        const requestDTO: SetAnswerDTO =  { question_id, change_type, answer_value };
+        processPromise(
+            axios.post( `/api/${sessionId}/answer`, requestDTO ),
+            "sendAnswer",
+            "sending an answer",
+            callerLabel,
+            () => handleResponseData && handleResponseData(),
             onError
         )
     },

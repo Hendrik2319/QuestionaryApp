@@ -194,6 +194,7 @@ export default function App(): JSX.Element
                 case 'PAGE':
                     return generatePage(
                         (<QuestionPage
+                            sessionId={sessionId}
                             page={pageData.page}
                             answers={pageData.answers}
                         />),
@@ -206,6 +207,7 @@ export default function App(): JSX.Element
                 case 'RESUME':
                     return generatePage(
                         (<ResumePage
+                            sessionId={sessionId}
                             questions={pageData.questions}
                         />),
                         {

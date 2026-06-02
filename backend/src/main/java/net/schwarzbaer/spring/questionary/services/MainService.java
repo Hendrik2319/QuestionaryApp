@@ -144,7 +144,7 @@ public class MainService
         if (question instanceof QuestionGroup)
             throw new IllegalArgumentException("Given answer targets directly a question group (id:\"%s\")".formatted(question.id));
 
-        if (question.meetsToValue(answerValue))
+        if (!question.meetsToValue(answerValue))
             throw new IllegalArgumentException("Given answer value (%s) does'nt fit to question (id:\"%s\")".formatted(answerValue, question.id));
 
         Set<PolymorphicValue> answerSet = questionaryAnswers.answers().computeIfAbsent(questionId, id->new HashSet<>());
