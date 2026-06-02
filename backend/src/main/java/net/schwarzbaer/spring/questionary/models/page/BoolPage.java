@@ -9,8 +9,8 @@ import lombok.ToString;
 @Getter @ToString(callSuper=true)
 public class BoolPage extends Page
 {
-    public BoolPage(@NonNull String id, @NonNull List<String> texts, boolean isFirst)
+    public BoolPage(@NonNull String id, @NonNull List<String> texts, boolean firstPage)
     {
-        super(id, texts, isFirst);
+        super(id, texts, firstPage);
     }
 }

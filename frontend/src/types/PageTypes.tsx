@@ -3,7 +3,7 @@ import type { OptionDef } from "./DefinitionsTypes";
 interface Page_Base {
     id: string,
     texts: string[],
-    is_first: boolean,
+    first_page: boolean,
 }
 
 interface BoolPage extends Page_Base {

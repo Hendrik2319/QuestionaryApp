@@ -8,7 +8,7 @@ import UploadQuestionaryFile from './components/UploadQuestionaryFile';
 import { generateRandomString } from './Debug';
 import QuestionPage from './pages/QuestionPage';
 import ResumePage from './pages/ResumePage';
-import type { GetPageResponseDTO, InitialValuesDTO } from './types/Types';
+import type { GetPageResponseDTO, InitialValuesDTO, PageDirection } from './types/Types';
 
 type LoadingMsg = {
     message: string,
@@ -72,14 +72,30 @@ export default function App(): JSX.Element
         );
     }
 
-    function onClickPrevBtn()
+    function gotoNextPage(sessionId: string, questionId: string | null, direction: PageDirection, loadingMsgText: string)
     {
-        // TODO
+        setLoadingMsg({ message:loadingMsgText, isLoading: true });
+        BackendAPI.getNextPage(
+            "MainPage.gotoNextPage",
+            sessionId, questionId, direction,
+            responseDTO => {
+                setLoadingMsg({ message:"", isLoading: false });
+                setPageData(responseDTO);
+                console.debug("BackendAPI.getNextPage -> ", { sessionId, questionId, direction, loadingMsgText, responseDTO });
+            }
+        );
     }
 
-    function onClickNextBtn()
+    function onClickBtn(direction: PageDirection)
     {
-        // TODO
+        if (!sessionId) return;
+        if (!pageData) return;
+        gotoNextPage(
+            sessionId,
+            (pageData.type === 'PAGE' ? pageData.page.id : null),
+            direction,
+            "Frage wird geladen"
+        );
     }
 
     function setAndGetStateValue<T = boolean | string>( newValue: T | undefined, oldValue: T, setFunc: (val:T)=>void ): T
@@ -102,10 +118,10 @@ export default function App(): JSX.Element
                 <PageFooter
                     isPrevBtnDisabled={setAndGetStateValue( buttonOptions?.isPrevBtnDisabled, isPrevBtnDisabled, setPrevBtnDisabled )}
                     isNextBtnDisabled={setAndGetStateValue( buttonOptions?.isNextBtnDisabled, isNextBtnDisabled, setNextBtnDisabled )}
-                    prevBtnText={setAndGetStateValue( buttonOptions?.prevBtnText, prevBtnText, setPrevBtnText )}
-                    nextBtnText={setAndGetStateValue( buttonOptions?.nextBtnText, nextBtnText, setNextBtnText )}
-                    onClickPrevBtn={onClickPrevBtn}
-                    onClickNextBtn={onClickNextBtn}
+                    prevBtnText      ={setAndGetStateValue( buttonOptions?.prevBtnText      , prevBtnText      , setPrevBtnText     )}
+                    nextBtnText      ={setAndGetStateValue( buttonOptions?.nextBtnText      , nextBtnText      , setNextBtnText     )}
+                    onClickPrevBtn={()=>onClickBtn('PREV')}
+                    onClickNextBtn={()=>onClickBtn('NEXT')}
                 />
             </>
         );
@@ -113,21 +129,29 @@ export default function App(): JSX.Element
 
     if (message)
         return generatePage(
-            <ShowMessage
+            (<ShowMessage
                 message={message}
                 onBtnClick={()=>setMessage(null)}
-            />
+            />),
+            {
+                isPrevBtnDisabled: true,
+                isNextBtnDisabled: true,
+            }
         );
 
     if (loadingMsg.isLoading)
         return generatePage(
-            <div>{loadingMsg.message} ...</div>
+            (<div>{loadingMsg.message} ...</div>),
+            {
+                isPrevBtnDisabled: true,
+                isNextBtnDisabled: true,
+            }
         );
 
     if (needQuest)
         return generatePage(
-            <UploadQuestionaryFile
-                text={"Bitte wählen Sie eine Fragebogen-Datei aus und klicken Sie auf \"Hochladen\":"}
+            (<UploadQuestionaryFile
+                text={"Bitte wählen Sie eine Fragebogen-Datei aus und klicken Sie dann auf \"Hochladen\":"}
                 notifyLoading={isLoading => {
                     if (isLoading)
                         setLoadingMsg({ message:"Fragebogen wird hochgeladen", isLoading: true });
@@ -145,22 +169,22 @@ export default function App(): JSX.Element
 
                     setNeedQuest(!result.success);
                 }}
-            />
+            />),
+            {
+                isPrevBtnDisabled: true,
+                isNextBtnDisabled: true,
+            }
         );
     
     if (sessionId)
     {
         if (!pageData)
         {
-            setLoadingMsg({ message:"Erste Frage wird geladen", isLoading: true });
-            BackendAPI.getNextPage(
-                "MainPage[Load first Page]",
-                sessionId, null, "NEXT",
-                responseDTO => {
-                    setLoadingMsg({ message:"", isLoading: false });
-                    setPageData(responseDTO);
-                    console.debug("BackendAPI.getNextPage -> ", { responseDTO });
-                }
+            gotoNextPage(
+                sessionId,
+                null,
+                "NEXT",
+                "Erste Frage wird geladen"
             );
         }
         else
@@ -174,7 +198,7 @@ export default function App(): JSX.Element
                             page_data={pageData.page_data}
                         />),
                         {
-                            isPrevBtnDisabled: pageData.page.is_first,
+                            isPrevBtnDisabled: pageData.page.first_page,
                             isNextBtnDisabled: false,
                         }
                     );
@@ -194,7 +218,10 @@ export default function App(): JSX.Element
     }
     
     return generatePage(
-        <>
-        </>
+        (<></>),
+        {
+            isPrevBtnDisabled: true,
+            isNextBtnDisabled: true,
+        }
     );
 }

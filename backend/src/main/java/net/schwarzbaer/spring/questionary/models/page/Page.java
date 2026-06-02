@@ -27,5 +27,5 @@ public abstract class Page
     private final String id;
     @NonNull
     private final List<String> texts;
-    private final boolean isFirst;
+    private final boolean firstPage;
 }
