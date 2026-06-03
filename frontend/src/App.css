@@ -9,3 +9,7 @@
     font-size: 10pt;
     padding: 5px;
 }
+
+hr {
+    color: var(--fg_normalblau);
+}

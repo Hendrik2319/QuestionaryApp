@@ -1,0 +1,14 @@
+.Resume > .Question {
+    margin-left: 2em;
+    margin-bottom: 2em;
+}
+.QuestionText {
+    color: var(--fg_normalblau);
+    margin-bottom: 0.5em;
+    margin-top: 0.5em;
+    font-size: 12pt;
+    font-weight: bold;
+}
+.QuestionValues {
+    margin-left: 2em;
+}

@@ -1,8 +1,6 @@
 import { useEffect, useState, type JSX } from 'react';
 import './App.css';
 import BackendAPI from './BackendAPI';
-import PageFooter from './components/PageFootert';
-import PageHeader from './components/PageHeader';
 import ShowMessage from './components/ShowMessage';
 import UploadQuestionaryFile from './components/UploadQuestionaryFile';
 import { generateRandomString } from './Debug';
@@ -112,17 +110,25 @@ export default function App(): JSX.Element
     {
         return (
             <>
-                <PageHeader title={title}/>
+                <h1 className={"PageTitle"}>Fragebogen: {title}</h1>
+                <hr/>
                 {generateDebugInfo()}
                 {content}
-                <PageFooter
-                    isPrevBtnDisabled={setAndGetStateValue( buttonOptions?.isPrevBtnDisabled, isPrevBtnDisabled, setPrevBtnDisabled )}
-                    isNextBtnDisabled={setAndGetStateValue( buttonOptions?.isNextBtnDisabled, isNextBtnDisabled, setNextBtnDisabled )}
-                    prevBtnText      ={setAndGetStateValue( buttonOptions?.prevBtnText      , prevBtnText      , setPrevBtnText     )}
-                    nextBtnText      ={setAndGetStateValue( buttonOptions?.nextBtnText      , nextBtnText      , setNextBtnText     )}
-                    onClickPrevBtn={()=>onClickBtn('PREV')}
-                    onClickNextBtn={()=>onClickBtn('NEXT')}
-                />
+                <hr/>
+                <div>
+                    <button
+                        className={"PageButton"}
+                        onClick ={()=>onClickBtn('PREV')}
+                        disabled={setAndGetStateValue( buttonOptions?.isPrevBtnDisabled, isPrevBtnDisabled, setPrevBtnDisabled )}>
+                                 {setAndGetStateValue( buttonOptions?.prevBtnText      , prevBtnText      , setPrevBtnText     )}
+                    </button>
+                    <button
+                        className={"PageButton"}
+                        onClick ={()=>onClickBtn('NEXT')}
+                        disabled={setAndGetStateValue( buttonOptions?.isNextBtnDisabled, isNextBtnDisabled, setNextBtnDisabled )}>
+                                 {setAndGetStateValue( buttonOptions?.nextBtnText      , nextBtnText      , setNextBtnText     )}
+                    </button>
+                </div>
             </>
         );
     }

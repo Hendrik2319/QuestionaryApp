@@ -1,0 +1,16 @@
+.NoAnswer {
+    color: #a00000;
+}
+.NoAnswer::before {
+    content: "< ";
+}
+.NoAnswer::after {
+    content: " >";
+}
+
+.Answer {
+    display: inline-block;
+    padding: 0.2em 0.5em;
+    border-radius: 0.4em;
+    background: #e5f1f9;
+}

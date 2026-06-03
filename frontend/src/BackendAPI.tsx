@@ -66,7 +66,6 @@ const BackendAPI = {
         onError?: (error: any)=>void
     ) => {
         const requestDTO: SetAnswerDTO =  { question_id, change_type, answer_value };
-        console.debug("BackendAPI.sendAnswer", { callerLabel, sessionId, requestDTO });
         processPromise(
             axios.post( `/api/${sessionId}/answer`, requestDTO ),
             "sendAnswer",
