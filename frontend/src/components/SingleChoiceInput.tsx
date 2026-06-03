@@ -2,7 +2,7 @@ import { useEffect, useState, type ChangeEvent, type JSX } from "react";
 import BackendAPI from "../BackendAPI";
 import type { OptionDef } from "../types/DefinitionsTypes";
 import type { PolymorphicValue } from "../types/Types";
-import "./SingleChoiceInput.css";
+import "./AllInput.css";
 
 type Props = {
     sessionId: string,
@@ -19,7 +19,7 @@ function buildAnswer(answers: PolymorphicValue[]): string|null
     return null;
 }
 
-export default function SingleChoiceInput( { sessionId, questionId, options, answers }: Readonly<Props>): JSX.Element
+export default function SingleChoiceInput( { sessionId, questionId, options, answers }: Props): JSX.Element
 {
     const [localAnswer, setLocalAnswer ] = useState<string|null>( buildAnswer(answers) );
     
@@ -43,7 +43,7 @@ export default function SingleChoiceInput( { sessionId, questionId, options, ans
     }
 
     return (
-        <div className="SingleChoiceInput">
+        <div className="InputGroup">
         {
             options.map(
                 (option: OptionDef) => {

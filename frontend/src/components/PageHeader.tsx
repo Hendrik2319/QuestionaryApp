@@ -5,7 +5,7 @@ type Props = {
     title: string,
 }
 
-export default function PageHeader( { title }: Readonly<Props>): JSX.Element
+export default function PageHeader( { title }: Props ): JSX.Element
 {
     return (
         <>

@@ -14,7 +14,7 @@ export type Result = {
     questionaryTitle?: string,
 };
 
-export default function UploadQuestionaryFile( { text, setResult, notifyLoading }: Readonly<Props> ): JSX.Element
+export default function UploadQuestionaryFile( { text, setResult, notifyLoading }: Props ): JSX.Element
 {
     const [file, setFile] = useState<File | null>(null);
 

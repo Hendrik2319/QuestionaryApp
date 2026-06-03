@@ -5,7 +5,7 @@ type Props = {
     onBtnClick: () => void,
 }
 
-export default function ShowMessage( { message, onBtnClick }: Readonly<Props>): JSX.Element
+export default function ShowMessage( { message, onBtnClick }: Props ): JSX.Element
 {
     return (
         <>

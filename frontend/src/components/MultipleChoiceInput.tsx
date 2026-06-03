@@ -2,7 +2,7 @@ import { useEffect, useState, type ChangeEvent, type JSX } from "react";
 import BackendAPI from "../BackendAPI";
 import type { OptionDef } from "../types/DefinitionsTypes";
 import type { PolymorphicValue } from "../types/Types";
-import "./MultipleChoiceInput.css";
+import "./AllInput.css";
 
 type Props = {
     sessionId: string,
@@ -20,7 +20,7 @@ function buildStringSet(answers: PolymorphicValue[]): Set<string>
     );
 }
 
-export default function MultipleChoiceInput( { sessionId, questionId, options, answers }: Props): JSX.Element
+export default function MultipleChoiceInput( { sessionId, questionId, options, answers }: Props ): JSX.Element
 {
     const [localAnswers, setLocalAnswers ] = useState<Set<string>>(buildStringSet(answers));
     
@@ -55,7 +55,7 @@ export default function MultipleChoiceInput( { sessionId, questionId, options, a
     }
 
     return (
-        <div className="MultipleChoiceInput">
+        <div className="InputGroup">
         {
             options.map(
                 (option: OptionDef) => {

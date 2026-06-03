@@ -10,7 +10,7 @@ type Props = {
     onClickNextBtn: ()=>void,
 }
 
-export default function PageFooter( props: Readonly<Props>): JSX.Element
+export default function PageFooter( props: Readonly<Props> ): JSX.Element
 {
     return (
         <>
