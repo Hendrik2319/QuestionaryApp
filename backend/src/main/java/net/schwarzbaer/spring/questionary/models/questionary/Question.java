@@ -15,6 +15,7 @@ import net.schwarzbaer.spring.questionary.models.definitions.QuestionGroupDef;
 import net.schwarzbaer.spring.questionary.models.definitions.SelectionType;
 import net.schwarzbaer.spring.questionary.models.errors.WrongDefinitionStructureException;
 import net.schwarzbaer.spring.questionary.models.page.Page;
+import net.schwarzbaer.spring.questionary.models.resume.QuestionResumeDTO;
 
 public abstract class Question<DefinitionType extends QuestionDef>
 {
@@ -76,7 +77,8 @@ public abstract class Question<DefinitionType extends QuestionDef>
     }
 
     public abstract boolean meetsToValue(@NonNull PolymorphicValue value);
-    public abstract Page createPage(boolean isFirst);
+    public abstract @NonNull Page createPage(boolean isFirst);
+    public abstract @NonNull QuestionResumeDTO createResumeDTO(@NonNull QuestionaryAnswers questionaryAnswers);
 
     public SelectionType getSelectionType()
     {

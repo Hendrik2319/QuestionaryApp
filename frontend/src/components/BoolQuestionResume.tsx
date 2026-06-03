@@ -11,7 +11,7 @@ export default function BoolQuestionResume( { answer }: Props ): JSX.Element
         <>
         {
             answer == null
-                ? <span className="NoAnswer">Es wurde nichts angegeben</span>
+                ? <span className="NoAnswer">Es wurde nichts angegeben.</span>
                 : <span className="Answer">{answer ? "Ja" : "Nein"}</span>
         }
         </>

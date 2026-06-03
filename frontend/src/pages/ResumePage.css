@@ -16,3 +16,13 @@
 .Resume .QuestionValues {
     margin-left: 2em;
 }
+
+.Resume .NotRelevant {
+    color: var(--fg_not_relevant_question);
+}
+.Resume .NotRelevant::before {
+    content: "< ";
+}
+.Resume .NotRelevant::after {
+    content: " >";
+}

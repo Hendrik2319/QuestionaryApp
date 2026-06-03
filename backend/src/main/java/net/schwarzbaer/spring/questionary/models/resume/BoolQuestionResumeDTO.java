@@ -9,9 +9,9 @@ public class BoolQuestionResumeDTO extends QuestionResumeDTO
 {
     private final Boolean answer;
 
-    public BoolQuestionResumeDTO(@NonNull String id, @NonNull String text, Boolean answer)
+    public BoolQuestionResumeDTO(@NonNull String id, @NonNull String text, boolean active, Boolean answer)
     {
-        super(id, text);
+        super(id, text, active);
         this.answer = answer;
     }
 }

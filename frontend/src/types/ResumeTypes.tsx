@@ -3,6 +3,7 @@ import type { OptionDef } from "./DefinitionsTypes";
 interface QuestionResumeDTO_Base {
     id: string,
     text: string,
+    active: boolean,
 }
 
 interface BoolQuestionResumeDTO extends QuestionResumeDTO_Base {

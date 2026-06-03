@@ -12,27 +12,27 @@ public abstract class ChoiceQuestionResumeDTO extends QuestionResumeDTO
 {
     @NonNull private final List<OptionDef> answers;
 
-    protected ChoiceQuestionResumeDTO(@NonNull String id, @NonNull String text, @NonNull List<OptionDef> answers)
+    protected ChoiceQuestionResumeDTO(@NonNull String id, @NonNull String text, boolean active, @NonNull List<OptionDef> answers)
     {
-        super(id, text);
+        super(id, text, active);
         this.answers = answers;
     }
 
     @Getter @ToString(callSuper=true)
     public static class MultipleDTO extends ChoiceQuestionResumeDTO
     {
-        public MultipleDTO(@NonNull String id, @NonNull String text, @NonNull List<OptionDef> answers)
+        public MultipleDTO(@NonNull String id, @NonNull String text, boolean active, @NonNull List<OptionDef> answers)
         {
-            super(id, text, answers);
+            super(id, text, active, answers);
         }
     }
 
     @Getter @ToString(callSuper=true)
     public static class SingleDTO extends ChoiceQuestionResumeDTO
     {
-        public SingleDTO(@NonNull String id, @NonNull String text, @NonNull List<OptionDef> answers)
+        public SingleDTO(@NonNull String id, @NonNull String text, boolean active, @NonNull List<OptionDef> answers)
         {
-            super(id, text, answers);
+            super(id, text, active, answers);
         }
     }
 }

@@ -138,8 +138,12 @@ public class Questionary
         return null;
     }
 
-    public void forEachQuestionDef(Consumer<QuestionDef> action)
+    public void forEachToplevelQuestion(Consumer<Question<?>> action)
     {
-        definition.questions().forEach(action);
+        definition.questions().forEach(def -> {
+            Question<?> question = questions.get(def.getId());
+            if (question!=null)
+                action.accept(question);
+        });
     }
 }

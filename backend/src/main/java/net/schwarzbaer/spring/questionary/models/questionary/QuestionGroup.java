@@ -7,10 +7,13 @@ import java.util.function.Function;
 
 import lombok.NonNull;
 import net.schwarzbaer.spring.questionary.models.PolymorphicValue;
+import net.schwarzbaer.spring.questionary.models.answers.QuestionaryAnswers;
 import net.schwarzbaer.spring.questionary.models.definitions.QuestionDef;
 import net.schwarzbaer.spring.questionary.models.definitions.QuestionGroupDef;
 import net.schwarzbaer.spring.questionary.models.errors.WrongDefinitionStructureException;
 import net.schwarzbaer.spring.questionary.models.page.Page;
+import net.schwarzbaer.spring.questionary.models.resume.QuestionGroupResumeDTO;
+import net.schwarzbaer.spring.questionary.models.resume.QuestionResumeDTO;
 
 public class QuestionGroup extends Question<QuestionGroupDef>
 {
@@ -82,9 +85,24 @@ public class QuestionGroup extends Question<QuestionGroupDef>
     }
 
     @Override
-    public Page createPage(boolean isFirst)
+    public @NonNull Page createPage(boolean isFirst)
     {
         throw new UnsupportedOperationException("There not page for a whole question group.");
     }
-    
+
+    @Override
+    public @NonNull QuestionGroupResumeDTO createResumeDTO(@NonNull QuestionaryAnswers questionaryAnswers)
+    {
+        return new QuestionGroupResumeDTO(id, text, isActive(questionaryAnswers), getSubQuestionDTOs(questionaryAnswers));
+    }
+
+    private @NonNull List<QuestionResumeDTO> getSubQuestionDTOs(@NonNull QuestionaryAnswers questionaryAnswers)
+    {
+        return subQuestions==null
+            ? List.of()
+            : subQuestions
+                .stream()
+                .map(q -> q.createResumeDTO(questionaryAnswers))
+                .toList();
+    }
 }

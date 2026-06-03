@@ -16,7 +16,11 @@ export function createQuestionResumeList( questions: QuestionResumeDTO[] ): JSX.
         question => (
             <div key={question.id} className="Question">
                 <div className="QuestionText">{question.text}</div>
-                <div className="QuestionValues">{createQuestionResumeComponent(question)}</div>
+                <div className="QuestionValues">{
+                    question.active
+                        ? createQuestionResumeComponent(question)
+                        : <span className="NotRelevant">Ist hier nicht relevant im Kontext der anderen Fragen.</span>
+                }</div>
             </div>
         )
     )

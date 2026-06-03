@@ -24,4 +24,5 @@ public abstract class QuestionResumeDTO
 {
     @NonNull private final String id;
     @NonNull private final String text;
+    private final boolean active;
 }

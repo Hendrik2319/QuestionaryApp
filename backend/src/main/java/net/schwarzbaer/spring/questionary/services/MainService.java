@@ -101,16 +101,16 @@ public class MainService
 
             case NEXT:
                 @NonNull
-                List<QuestionResumeDTO> allQuestions = new ArrayList<>();
-                currentQuestionary.forEachQuestionDef(
-                    questionDef ->
-                        allQuestions.add(
-                            questionDef==null
+                List<QuestionResumeDTO> allQuestionDTOs = new ArrayList<>();
+                currentQuestionary.forEachToplevelQuestion(
+                    question ->
+                        allQuestionDTOs.add(
+                            question==null
                                 ? null
-                                : questionDef.createResumeDTO(questionaryAnswers)
+                                : question.createResumeDTO(questionaryAnswers)
                         )
                 );
-                return new GetPageResponseDTO.ResumeDTO( allQuestions );
+                return new GetPageResponseDTO.ResumeDTO( allQuestionDTOs );
 
             default:
                 throw new IllegalStateException("GetPageRequestDTO.Direction has an unexpected enum value: %s".formatted(direction));

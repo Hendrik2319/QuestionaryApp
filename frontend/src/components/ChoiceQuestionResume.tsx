@@ -12,7 +12,7 @@ export default function ChoiceQuestionResume( { answers }: Props ): JSX.Element
         <>
         {
             answers.length == 0
-                ? <span className="NoAnswer">Es wurde nichts angegeben</span>
+                ? <span className="NoAnswer">Es wurde nichts angegeben.</span>
                 : answers.map(
                     answer =>
                         <span key={answer.value} className="Answer">

@@ -11,9 +11,9 @@ public class QuestionGroupResumeDTO extends QuestionResumeDTO
 {
     @NonNull private final List<QuestionResumeDTO> subQuestions;
 
-    public QuestionGroupResumeDTO(@NonNull String id, @NonNull String text, @NonNull List<QuestionResumeDTO> subQuestions)
+    public QuestionGroupResumeDTO(@NonNull String id, @NonNull String text, boolean active, @NonNull List<QuestionResumeDTO> subQuestions)
     {
-        super(id, text);
+        super(id, text, active);
         this.subQuestions = subQuestions;
     }
 }
