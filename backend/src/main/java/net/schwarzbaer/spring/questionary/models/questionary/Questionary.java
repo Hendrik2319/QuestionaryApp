@@ -70,6 +70,9 @@ public class Questionary
 
     public void checkDefinitionStructure() throws WrongDefinitionStructureException
     {
+        if (title.isBlank())
+            throw new WrongDefinitionStructureException("There is no title defined in questionary.");
+
         if (questionPages.isEmpty())
             throw new WrongDefinitionStructureException("There are no showable questions in questionary.");
 

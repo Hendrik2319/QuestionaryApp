@@ -66,6 +66,12 @@ public class QuestionGroup extends Question<QuestionGroupDef>
     {
         super.checkDefinitionStructure();
 
+        if (subQuestions.isEmpty())
+            throw new WrongDefinitionStructureException(
+                "A QuestionGroup (id\"%s\") must at leat one sub question."
+                .formatted(id)
+            );
+
         for (Question<?> subQuestion : subQuestions)
         {
             if (subQuestion instanceof QuestionGroup)
