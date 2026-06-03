@@ -174,7 +174,12 @@ public class MainService
 
     private @NonNull QuestionaryAnswers getQuestionaryAnswers(@NonNull String sessionId) throws NoSuchElementException
     {
-        QuestionaryAnswers questionaryAnswers = allQuestionaryAnswers.get(sessionId);
+        QuestionaryAnswers questionaryAnswers;
+        synchronized(allQuestionaryAnswers)
+        {
+            questionaryAnswers = allQuestionaryAnswers.get(sessionId);
+        }
+
         if (questionaryAnswers==null)
             throw new NoSuchElementException("Unknown session ID: %s".formatted(sessionId));
         return questionaryAnswers;
@@ -182,11 +187,16 @@ public class MainService
 
     public InitialValuesDTO generateInitialValues()
     {
-        String sessionId = getNewSessionId();
+        String sessionId;
 
-        LocalDateTime now = LocalDateTime.now();
-        removeOldSessions(now, Duration.ofHours(5));
-        allQuestionaryAnswers.put(sessionId, new QuestionaryAnswers(sessionId, now));
+        synchronized(allQuestionaryAnswers)
+        {
+            while (allQuestionaryAnswers.containsKey(sessionId = sessionIdGenerator.generate()));
+
+            LocalDateTime now = LocalDateTime.now();
+            removeOldSessions(now, Duration.ofHours(5));
+            allQuestionaryAnswers.put(sessionId, new QuestionaryAnswers(sessionId, now));
+        }
 
         return new InitialValuesDTO(
             sessionId,
@@ -197,23 +207,19 @@ public class MainService
         );
     }
 
-    private String getNewSessionId()
-    {
-        String sessionId;
-        while (allQuestionaryAnswers.containsKey(sessionId = sessionIdGenerator.generate()));
-        return sessionId;
-    }
-
     private void removeOldSessions(LocalDateTime now, Duration maxActiveDuration)
     {
-        List<String> sessionIds = new ArrayList<>(allQuestionaryAnswers.keySet());
-        for (String otherSessionId : sessionIds)
+        synchronized(allQuestionaryAnswers)
         {
-            QuestionaryAnswers otherAnswers = allQuestionaryAnswers.get(otherSessionId);
-            if (otherAnswers==null) continue;
-            Duration durationActive = Duration.between(otherAnswers.createTime(), now);
-            if (durationActive.compareTo(maxActiveDuration) > 0)
-                allQuestionaryAnswers.remove(otherSessionId);
+            List<String> sessionIds = new ArrayList<>(allQuestionaryAnswers.keySet());
+            for (String otherSessionId : sessionIds)
+            {
+                QuestionaryAnswers otherAnswers = allQuestionaryAnswers.get(otherSessionId);
+                if (otherAnswers==null) continue;
+                Duration durationActive = Duration.between(otherAnswers.createTime(), now);
+                if (durationActive.compareTo(maxActiveDuration) > 0)
+                    allQuestionaryAnswers.remove(otherSessionId);
+            }
         }
     }
 }
