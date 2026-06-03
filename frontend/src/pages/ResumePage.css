@@ -26,3 +26,14 @@
 .Resume .NotRelevant::after {
     content: " >";
 }
+
+.Resume .Download {
+    display: inline-block;
+    border: 1px solid var(--fg_normalblau);
+    padding: 1em;
+    border-radius: 0.2em;
+}
+
+.Resume .Download a {
+    color: var(--fg_normalblau);
+}

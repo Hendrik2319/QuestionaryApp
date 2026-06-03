@@ -1,7 +1,8 @@
 import type { AxiosResponse } from "axios";
 import axios from "axios";
-import type { GetPageRequestDTO, GetPageResponseDTO, InitialValuesDTO, PageDirection, PolymorphicValue, QuestionaryTitle } from "./types/Types";
 import type { ChangeType, SetAnswerDTO } from "./types/AnswerTypes";
+import type { GetPageRequestDTO, GetPageResponseDTO, InitialValuesDTO, QuestionaryTitle } from "./types/DTOs";
+import type { PageDirection, PolymorphicValue } from "./types/Types";
 
 const BackendAPI = {
 

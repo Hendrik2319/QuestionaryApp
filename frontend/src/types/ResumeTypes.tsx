@@ -25,3 +25,30 @@ export type QuestionResumeDTO =
     | BoolQuestionResumeDTO
     | ChoiceQuestionResumeDTO
     | QuestionGroupResumeDTO;
+
+
+interface Answer_Base {
+    questionId: string,
+}
+interface BoolAnswer extends Answer_Base {
+    type: "BOOL",
+    answer: boolean,
+}
+interface SingleChoiceAnswer extends Answer_Base {
+    type: "SINGLE",
+    answer: string,
+}
+interface MultipleChoiceAnswer extends Answer_Base {
+    type: "MULTIPLE",
+    answers: string[],
+}
+
+export type Answer =
+    | BoolAnswer
+    | SingleChoiceAnswer
+    | MultipleChoiceAnswer;
+
+export type Download = {
+    sessionId: string,
+    answers: Answer[],
+}

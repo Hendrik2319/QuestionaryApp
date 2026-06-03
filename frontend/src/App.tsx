@@ -5,7 +5,8 @@ import ShowMessage from './components/ShowMessage';
 import UploadQuestionaryFile from './components/UploadQuestionaryFile';
 import QuestionPage from './pages/QuestionPage';
 import ResumePage from './pages/ResumePage';
-import type { GetPageResponseDTO, InitialValuesDTO, PageDirection } from './types/Types';
+import type { GetPageResponseDTO, InitialValuesDTO } from './types/DTOs';
+import type { PageDirection } from './types/Types';
 
 type LoadingMsg = {
     message: string,
