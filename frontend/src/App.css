@@ -1,15 +1,47 @@
-.PageButton {
-    padding: 5px 20px;
+.PageTitle, .PageButtonRow {
+    margin-left: 0.5em;
 }
 
-.DebugInfo {
-    display: inline-block;
-    color: #96c5ba;
-    background: #fafafa;
-    font-size: 10pt;
-    padding: 5px;
+.PageButton {
+    padding: 0.5em 2em;
+    color: var(--fg_pagebutton);
+    background: var(--bg_pagebutton);
+    font-weight: bold;
+    border: none;
+    border-radius: 0.3em;
+}
+.PageButton:disabled {
+    color: var(--fg_pagebutton_disabled);
+    background: var(--bg_pagebutton_disabled);
 }
 
 hr {
     color: var(--fg_normalblau);
+}
+
+.PageHeader {     
+    position: sticky;
+    top: 0;
+    width: 100%;
+    background: var(--bg_page);
+    padding-top: 0.5em;
+}
+
+.PageFooter {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: var(--bg_page);
+    padding-bottom: 0.5em;
+}
+
+.PageFooter hr {
+    margin: 0 0 0.5em 0;
+}
+.PageHeader hr {
+    margin: 0.5em 0 0 0;
+}
+
+.PageContent {
+    padding: 1em 1em 4em 1em;
 }

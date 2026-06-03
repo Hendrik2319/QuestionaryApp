@@ -1,5 +1,5 @@
 .NoAnswer {
-    color: #a00000;
+    color: var(--fg_noanswer_item);
 }
 .NoAnswer::before {
     content: "< ";
@@ -12,5 +12,5 @@
     display: inline-block;
     padding: 0.2em 0.5em;
     border-radius: 0.4em;
-    background: #e5f1f9;
+    background: var(--bg_answer_item);
 }

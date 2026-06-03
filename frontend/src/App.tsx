@@ -3,7 +3,6 @@ import './App.css';
 import BackendAPI from './BackendAPI';
 import ShowMessage from './components/ShowMessage';
 import UploadQuestionaryFile from './components/UploadQuestionaryFile';
-import { generateRandomString } from './Debug';
 import QuestionPage from './pages/QuestionPage';
 import ResumePage from './pages/ResumePage';
 import type { GetPageResponseDTO, InitialValuesDTO, PageDirection } from './types/Types';
@@ -30,8 +29,8 @@ export default function App(): JSX.Element
     const [title            , setTitle          ] = useState<string>("<nichts geladen>");
     const [isPrevBtnDisabled, setPrevBtnDisabled] = useState<boolean>(true);
     const [isNextBtnDisabled, setNextBtnDisabled] = useState<boolean>(true);
-    const [prevBtnText      , setPrevBtnText    ] = useState<string>("<");
-    const [nextBtnText      , setNextBtnText    ] = useState<string>(">");
+    const [prevBtnText      , setPrevBtnText    ] = useState<string>("🡰");
+    const [nextBtnText      , setNextBtnText    ] = useState<string>("🡲");
 
     const [pageData, setPageData] = useState<GetPageResponseDTO | null>(null);
     
@@ -53,22 +52,6 @@ export default function App(): JSX.Element
             );
         }
     }, []);
-
-    function generateDebugInfo(): JSX.Element
-    {
-        return (
-            <>
-                <span className={"DebugInfo"}>
-                    [{generateRandomString(7)}]<br/>
-                    SessionId: "{sessionId}"<br/>
-                    Need Quest: {needQuest?"true":"false"}<br/>
-                    Loading Msg: {loadingMsg.isLoading?"true":"false"} / "{loadingMsg.message}"<br/>
-                    Message: {message==null ? "<null>" : `\"${message}\"`}<br/>
-                </span>
-                <br/>
-            </>
-        );
-    }
 
     function gotoNextPage(sessionId: string, questionId: string | null, direction: PageDirection, loadingMsgText: string)
     {
@@ -110,24 +93,29 @@ export default function App(): JSX.Element
     {
         return (
             <>
-                <h1 className={"PageTitle"}>Fragebogen: {title}</h1>
-                <hr/>
-                {generateDebugInfo()}
-                {content}
-                <hr/>
-                <div>
-                    <button
-                        className={"PageButton"}
-                        onClick ={()=>onClickBtn('PREV')}
-                        disabled={setAndGetStateValue( buttonOptions?.isPrevBtnDisabled, isPrevBtnDisabled, setPrevBtnDisabled )}>
-                                 {setAndGetStateValue( buttonOptions?.prevBtnText      , prevBtnText      , setPrevBtnText     )}
-                    </button>
-                    <button
-                        className={"PageButton"}
-                        onClick ={()=>onClickBtn('NEXT')}
-                        disabled={setAndGetStateValue( buttonOptions?.isNextBtnDisabled, isNextBtnDisabled, setNextBtnDisabled )}>
-                                 {setAndGetStateValue( buttonOptions?.nextBtnText      , nextBtnText      , setNextBtnText     )}
-                    </button>
+                <div className="PageHeader">
+                    <h1 className={"PageTitle"}>Fragebogen: {title}</h1>
+                    <hr/>
+                </div>
+                <div className="PageContent">
+                    {content}
+                </div>
+                <div className="PageFooter">
+                    <hr/>
+                    <div className="PageButtonRow">
+                        <button
+                            className={"PageButton"}
+                            onClick ={()=>onClickBtn('PREV')}
+                            disabled={setAndGetStateValue( buttonOptions?.isPrevBtnDisabled, isPrevBtnDisabled, setPrevBtnDisabled )}>
+                                    {setAndGetStateValue( buttonOptions?.prevBtnText      , prevBtnText      , setPrevBtnText     )}
+                        </button>
+                        <button
+                            className={"PageButton"}
+                            onClick ={()=>onClickBtn('NEXT')}
+                            disabled={setAndGetStateValue( buttonOptions?.isNextBtnDisabled, isNextBtnDisabled, setNextBtnDisabled )}>
+                                    {setAndGetStateValue( buttonOptions?.nextBtnText      , nextBtnText      , setNextBtnText     )}
+                        </button>
+                    </div>
                 </div>
             </>
         );

@@ -2,13 +2,17 @@
     margin-left: 2em;
     margin-bottom: 2em;
 }
-.QuestionText {
+.Resume > .Question:last-child {
+    margin-bottom: 0;
+}
+
+.Resume .QuestionText {
     color: var(--fg_normalblau);
     margin-bottom: 0.5em;
     margin-top: 0.5em;
     font-size: 12pt;
     font-weight: bold;
 }
-.QuestionValues {
+.Resume .QuestionValues {
     margin-left: 2em;
 }

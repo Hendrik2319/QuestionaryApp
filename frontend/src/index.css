@@ -1,4 +1,22 @@
 #root {
     font-family: sans-serif;
+
+    --fg_page: #000;
     --fg_normalblau: #0082ba;
+    --fg_pagebutton: #fff;
+    --fg_pagebutton_disabled: #cee4ee;
+    --fg_noanswer_item: #a00000;
+
+    --bg_page: #fff;
+    --bg_answer_item: #e5f1f9;
+    --bg_pagebutton: var(--fg_normalblau);
+    --bg_pagebutton_disabled: #8fb0be;
+
+    color: var(--fg_page);
+    background: var(--bg_page);
+}
+
+html, body {
+    padding: 0;
+    margin: 0;
 }

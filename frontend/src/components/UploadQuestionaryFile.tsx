@@ -2,6 +2,7 @@ import type { ChangeEvent, JSX } from "react";
 import { useState } from "react";
 import BackendAPI from "../BackendAPI";
 import type { QuestionaryTitle } from "../types/Types";
+import "./UploadQuestionaryFile.css";
 
 type Props = {
     text: string,
@@ -47,11 +48,14 @@ export default function UploadQuestionaryFile( { text, setResult, notifyLoading 
     };
 
     return (
-        <div>
-            {text}<br/>
-            <input type="file" accept="application/json" onChange={handleFileChange} />
-            &nbsp;&nbsp;
-            <button onClick={handleUpload}>Hochladen</button>
+        <div className="UploadQuestionaryFile">
+            <div className="Text">
+                {text}
+            </div>
+            <div className="Input">
+                <input type="file" accept="application/json" onChange={handleFileChange} />
+                <button className="UploadBtn" onClick={handleUpload}>Hochladen</button>
+            </div>
         </div>
     );
 };
