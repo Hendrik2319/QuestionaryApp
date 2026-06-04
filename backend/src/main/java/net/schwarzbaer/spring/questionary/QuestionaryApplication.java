@@ -9,7 +9,7 @@ import net.schwarzbaer.spring.questionary.gui.ControlWindow;
 public class QuestionaryApplication {
 
 	public static void main(String[] args) {
-		ControlWindow.getInstance().start();
+		ControlWindow.getInstance().start(args);
 		SpringApplication.run(QuestionaryApplication.class, args);
 	}
 

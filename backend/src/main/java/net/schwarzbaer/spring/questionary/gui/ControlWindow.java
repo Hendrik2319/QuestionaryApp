@@ -37,10 +37,14 @@ public class ControlWindow extends JFrame
 
     }
 
-    public synchronized void start()
+    public synchronized void start(String[] args)
     {
         if (wasStarted)
             return;
+
+        for (String arg : args)
+            if (arg.toLowerCase().equals("-no_controlwindow"))
+                return;
 
         try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); }
         catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {}
