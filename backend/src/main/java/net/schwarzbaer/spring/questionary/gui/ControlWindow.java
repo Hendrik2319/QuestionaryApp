@@ -1,55 +1,46 @@
 package net.schwarzbaer.spring.questionary.gui;
 
+import java.awt.Dimension;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.plaf.DimensionUIResource;
 
-public class ControlWindow extends JFrame
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.ConfigurableApplicationContext;
+
+import lombok.NonNull;
+
+class ControlWindow extends JFrame
 {
-    private static ControlWindow instance = null;
+    private final @NonNull ConfigurableApplicationContext context;
 
-    public static ControlWindow getInstance()
-    {
-        if (instance==null)
-            instance = new ControlWindow();
-        return instance;
-    }
-    
-    private boolean wasStarted;
-
-    private ControlWindow()
+    ControlWindow(@NonNull ConfigurableApplicationContext context)
     {
         super("Questionary App");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        wasStarted = false;
+        this.context = context;
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
         JPanel contentPane = new JPanel();
         JButton btnStop = new JButton("Stop Server");
-        btnStop.addActionListener(ev -> System.exit(0));
+        btnStop.addActionListener(ev -> stopServer());
+        btnStop.setPreferredSize(new Dimension(300, 50));
         contentPane.add(btnStop);
+
+        addWindowListener(new WindowAdapter() {
+            @Override public void windowClosing(WindowEvent e) { stopServer(); }
+            @Override public void windowClosed (WindowEvent e) { stopServer(); }
+        });
         
-        setPreferredSize(new DimensionUIResource(300, 100));
         setContentPane(contentPane);
         pack();
-
     }
 
-    public synchronized void start(String[] args)
+    private void stopServer()
     {
-        if (wasStarted)
-            return;
-
-        for (String arg : args)
-            if (arg.toLowerCase().equals("-no_controlwindow"))
-                return;
-
-        try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); }
-        catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {}
-
-        setVisible(true);
-        wasStarted = true;
+        int exitCode = SpringApplication.exit(context);
+        System.exit(exitCode);
     }
 }
