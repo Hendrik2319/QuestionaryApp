@@ -3,18 +3,18 @@ Mit dieser kleinen Web-Anwendung wird dem Benutzer ein zuvor definierter Fragebo
 Es werden die Fragen einzeln präsentiert. Man kann im Fragebogen vor und zurück gehen.
 Fragen können auch vollständig unbeantwortet bleiben.
 Am Ende wird eine Zusammenfassung angezeigt, in der die Eingaben auch als
-<a href="#resume_file">Datei</a> herunterladen werden können.   
+[Datei](#resume_file) herunterladen werden können.   
 Wenn die Anwendung / der Server frisch gestartet ist, wird der erste Besucher dazu aufgefordert,
-eine <a href="#questionary_definition">Fragebogen-Definition</a> hochzuladen. War dies erfolgreich,
+eine [Fragebogen-Definition](#questionary_definition) hochzuladen. War dies erfolgreich,
 wird er, wie alle späteren Besucher, zur 1. Frage weiter geleitet.
 
 
 
 ## Verwendete Dateien
 Im Folgenden möchte ich hier das Format der beiden verwendeten Dateien (
-<a href="#questionary_definition">Fragebogen-Definition</a>
+[Fragebogen-Definition](#questionary_definition)
 und
-<a href="#resume_file">Zusammenfassung der Eingaben</a>
+[Zusammenfassung der Eingaben](#resume_file)
 ) zeigen.
 
 
@@ -123,7 +123,7 @@ gekapselt als Objekt und mit `type` zu Unterscheidung.
 `ChoiceQuestionDef.options`, `OptionDef`   
 Für jede dieser Optionen muss zumindest der Wert `value` definiert werden.
 Die Beschriftung (`label`) der Option kann entfallen. Es wird in diesem Fall der Text von `value` als Beschriftung verwendet.
-Der Wert von `value` wird sich am Ende des Fragebogens in der <a href="#resume_file">Zusammenfassung</a> wiederfinden.
+Der Wert von `value` wird sich am Ende des Fragebogens in der [Zusammenfassung](#resume_file) wiederfinden.
 Damit sollen bei etwaiger Weiterverarbeitung der Zusammenfassung die gegebenen Antworten identifiziert werden können.
 `value` muss dafür nur innerhalb der Frage eindeutig sein. Andere Fragen können dieselben Werte wiederverwenden.
 
@@ -194,5 +194,5 @@ Es werden dabei aber nur die Antworten von Fragen berücksichtigt,
 die aufgrund der Antworten der vorherigen Fragen noch als relevant gelten.
 Unberücksichtigt bleiben z.B. Fragen, die sich auf einen Sachverhalt beziehen,
 der in einer vorherigen Frage schon verneint wurde
-(siehe "<a href="#question_conditions">Bedingungen einer Frage</a>": `QuestionDef_Base.conditions` bzw. `ConditionsGroupDef` aus <a href="#questionary_definition">Fragebogen-Definition</a>).
+(siehe "[Bedingungen einer Frage](#question_conditions)": `QuestionDef_Base.conditions` bzw. `ConditionsGroupDef` aus [Fragebogen-Definition](#questionary_definition)).
 Es werden natürlich auch Fragen übersprungen, zu denen gar keine Anworten abgegeben wurden.
